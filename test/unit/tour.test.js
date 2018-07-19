@@ -12,7 +12,9 @@ describe('Tour model', () => {
             launchDate: new Date,
             stops: [{
                 location: {
-                    city: 'Portland'
+                    city: 'Portland',
+                    state: 'Oregon',
+                    zip: 97041
                 },
                 weather: {
                     temperature: 50
@@ -46,7 +48,9 @@ describe('Tour model', () => {
             launchDate: new Date,
             stops: [{
                 location: {
-                    city: 'Eugene'
+                    city: 'Eugene',
+                    state: 'Oregon',
+                    zip: 97080
                 },
                 weather: {
                     temperature: 75
