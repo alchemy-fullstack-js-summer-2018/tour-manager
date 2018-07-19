@@ -1,6 +1,7 @@
 const chai = require('chai');
 const { assert } = chai;
 const Tour = require('../../lib/models/tour');
+const { getErrors } = require('./helpers');
 
 describe('Tour model', () => {
 
@@ -43,6 +44,11 @@ describe('Tour model', () => {
         json.stops.forEach(s => delete s._id);
         assert.deepEqual(json, data);
         assert.isUndefined(tour.validateSync());
+    });
+
+    it('validates that title is required', () => {
+        const tour = new Tour({});
+        const errors = getErrors(tour.validateSync(), 1);
     });
 
 });
