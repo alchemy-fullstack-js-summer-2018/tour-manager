@@ -28,7 +28,6 @@ describe('Tour model', () => {
         console.log('** tour validate **', tour);
         json.stops.forEach(s => delete s._id);
         assert.deepEqual(json, data);
-        // assert.isUndefined(tour.validateSync());
     });
 
     it('title is required', () => {
@@ -51,15 +50,4 @@ describe('Tour model', () => {
         const errors = getErrors(tour.validateSync(), 1);
         assert.equal(errors['stops.0.attendance'].kind, 'min');
     });
-
-    // it('adds a stop to the tour', () => {
-    //     const tour = new Tour({
-
-    //     })
-    // });
-
-
-
-
-
 });
