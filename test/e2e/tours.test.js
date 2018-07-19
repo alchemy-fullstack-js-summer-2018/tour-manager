@@ -28,12 +28,7 @@ describe('Circus Tours API', () => {
     };
     const barnum = {
         title: 'P.T. Barnum',
-        activities: ['clowns', 'more clowns'],
-        stops: [
-            {
-                attendance: 7
-            }
-        ]
+        activities: ['clowns', 'more clowns']
     };
 
     beforeEach(() => {
@@ -120,4 +115,18 @@ describe('Circus Tours API', () => {
                 assert.equal(res.status, 404);
             });
     });
+
+    it('adds a stop to a tour', () => {
+        const stop = {
+            attendance: 30
+        };
+
+        return request
+            .post(`/api/tours/${barnumTour._id}/stops`)
+            .send(stop)
+            .then(({ body }) => {
+                assert.equal(body.attendance, stop.attendance);
+            });
+    });
+
 });
