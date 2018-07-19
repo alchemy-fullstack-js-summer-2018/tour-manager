@@ -70,4 +70,20 @@ describe('Tour data model', () => {
         const errors = getErrors(tour.validateSync(), 1);
         assert.equal(errors.title.kind, 'required');
     });
+
+    it('validates proper attendance entry', () => {
+        const data = {
+            title: 'The Bad Tour',
+            stops: [{
+                location: {},
+                weather: {},
+                attendance: 500
+            }]
+        };
+        const tour = new Tour(data);
+        assert.isUndefined(tour.validateSync());
+        tour.stops[0].attendance = 0;
+        const errors = getErrors(tour.validateSync(), 1);
+        assert.equal(errors['stops.0.attendance'].kind, 'min');
+    });
 });
