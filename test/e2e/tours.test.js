@@ -164,7 +164,33 @@ describe('Tours API', () => {
             });
     });
 
-    // it('deletes a stop from the tour', () => {
+    it('deletes a stop from the tour', () => {
+        const newStop = {
+            location: {
+                city: 'Austin',
+                state: 'Texas',
+                zip: 33039
+            },
+            weather: {
+                temperature: 100,
+                condition: 'Heat Warning'
+            },
+            attendance: 9500
+        };
 
-    // });
+        return addStop(tourA, newStop)
+            .then(stop => {
+                console.log('stop', stop);
+                return request
+                    .delete(`/api/tours/${tourA._id}/stops/${stop._id}`);
+            })
+            .then(checkOk)
+            .then(() => {
+                return request.get(`/api/tours/${tourA._id}`);
+            })
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.equal(body.stops.length, 3);
+            });
+    });
 });
