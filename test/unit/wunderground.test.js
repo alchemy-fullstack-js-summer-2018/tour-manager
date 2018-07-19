@@ -1,16 +1,6 @@
 const { assert } = require('chai');
-//to do: import the api file here and middleware at end of file
+const weatherService = require('../../lib/util/weather-service');
 
-function createMiddleware(api) {
-    return (req, res, next) => {
-        return api(req.body.zip)
-            .then(({ location, weather }) => {
-                req.body.location = location;
-                req.body.weather = weather;
-                next();
-            });
-    };
-}
 
 it('gets the city, state, weather and conditions for a tour stop', done => {
     const weather = {
@@ -41,6 +31,6 @@ it('gets the city, state, weather and conditions for a tour stop', done => {
 
     };
 
-    const middleware = createMiddleware(wunderground);
+    const middleware = weatherService(wunderground);
     middleware(req, null, next);
 });
