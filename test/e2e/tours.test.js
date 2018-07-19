@@ -108,4 +108,33 @@ describe('Tour API', () => {
             });
     });
 
+    it('Removes a stop from a tour', () => {
+        const burningMan = {
+            location: {
+                city: 'El Paso',
+                state: 'Texas',
+                zip: 80514
+            },
+            weather: {
+                temperature: 80
+            },
+            attendance: 100
+        };
+
+        return addStop(tour, burningMan)
+            .then(stop => {
+                console.log('stop', stop);
+                return request
+                    .delete(`/api/tours/${tour._id}/stops/${stop._id}`);
+            })
+            .then(checkOk)
+            .then(() => {
+                return request.get(`/api/tours/${tour._id}`);
+            })
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.equal(body.stops.length, 1);
+            });
+    });
+
 });
