@@ -64,7 +64,7 @@ describe('Tours API', () => {
             });
     });
 
-    it.skip('should POST a stop to a tour', () => {
+    it('should POST a stop to a tour', () => {
         const data = { zip: '96813' };
         const location = {
             city: 'Honolulu',
@@ -82,10 +82,14 @@ describe('Tours API', () => {
             });
     });
 
-    // it('should DELETE a stop', () => {
-    //     return request
-    //         .del()
-    // });
+    it('should DELETE a stop', () => {
+        return request
+            .del(`/api/tours/${tables._id}/stops/${tables.stops[0]._id}`)
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.isTrue(body.removed);
+            });
+    });
 
     describe('Tours API - error handler', () => {
 
