@@ -5,7 +5,7 @@ chai.use(chaiHttp);
 
 const app = require('../../lib/app');
 const server = createServer(app);
-const request = chai.request(server).keepOne();
+const request = chai.request(server).keepOpen();
 
 after(done => server.close(done));
 
