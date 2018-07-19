@@ -1,5 +1,6 @@
 const chai = require('chai');
 const { assert } = chai;
+const { getErrors } = require('./helpers');
 const Tour = require('../../lib/models/tour');
 
 describe('Tour model', () => {
@@ -16,7 +17,7 @@ describe('Tour model', () => {
                 weather: {
                     temperature: 50
                 },
-                attendance: 2
+                attendance: 1
             }]
         };
 
@@ -36,5 +37,24 @@ describe('Tour model', () => {
         const errors = validation.errors;
         assert.equal(Object.keys(errors).length, 1);
         assert.equal(errors.title.kind, ('required'));
+    });
+
+    it('Requires min attendence is 1', () => {
+        const tour = new Tour({
+            title: 'Okay Tour',
+            activities: ['lions', 'fire', 'huka'],
+            launchDate: new Date,
+            stops: [{
+                location: {
+                    city: 'Eugene'
+                },
+                weather: {
+                    temperature: 75
+                },
+                attendance: 0
+            }]
+        });
+        const errors = getErrors(tour.validateSync(), 1);
+        assert.equal(errors['stops.0.attendance'].kind, 'min');
     });
 });
