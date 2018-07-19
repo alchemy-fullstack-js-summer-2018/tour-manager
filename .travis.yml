@@ -4,5 +4,5 @@ node_js:
 services:
   - mongodb
 env:
-  - MONGODB_URI=mongodb://localhost:27017/music
+  - MONGODB_URI=mongodb://localhost:27017/tour-test
   - WU_API_KEY=5e1af6276eda1937
