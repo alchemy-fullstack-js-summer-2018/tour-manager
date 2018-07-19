@@ -29,4 +29,10 @@ describe('Pirate model', () => {
         assert.deepEqual(json, data);
         assert.isUndefined(tour.validateSync());
     });
+
+    it('tests required fields', () => {
+        const tour = new Tour({});
+        const errors = getErrors(tour.validateSync(), 1);
+        assert.equal(errors.name.kind, 'required');
+    });
 });
