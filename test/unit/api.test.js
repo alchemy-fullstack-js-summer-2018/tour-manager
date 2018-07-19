@@ -3,7 +3,7 @@ const { assert } = require('chai');
 function createMiddleware(api) {
     return (req, res, next) => {
         const data = api(req.body.zip);
-        console.log('**API**', api);
+        console.log('**API**', data);
         console.log('**REQ**', req);
         console.log('**RES**', res);
         console.log('**NEXT**', next);
