@@ -77,8 +77,13 @@ describe('Tour model', () => {
         assert.equal(errors['stops.0.attendance'].kind, 'min');
     });
 
-    it('validates that the date defaults to now', () => {
+    it('defaults date to now for launchDate', () => {
+        const date = new Date().getDate();
+        const tour = new Tour({
+            title: 'Cirque de Soleil',
+        });
 
+        assert.strictEqual(tour.launchDate.getDate(), date);
     });
 
 });
