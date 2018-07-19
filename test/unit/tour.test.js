@@ -28,7 +28,7 @@ describe('Tour model', () => {
         assert.isUndefined(tour.validateSync());
     });
 
-    it('Validates required fields', () => {
+    it('Title is required validation', () => {
         const tour = new Tour({});
         const validation = tour.validateSync();
         assert.isDefined(validation);
