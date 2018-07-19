@@ -1,4 +1,5 @@
 const { assert } = require('chai');
+//to do: import the api file here and middleware at end of file
 
 function createMiddleware(api) {
     return (req, res, next) => {
@@ -11,8 +12,8 @@ function createMiddleware(api) {
     };
 }
 
-it('gets the city, state, weather and conditions for a tour stop', () => {
-    const weather ={
+it('gets the city, state, weather and conditions for a tour stop', done => {
+    const weather = {
         temperature: 80,
         condition: 'hot'
     };
