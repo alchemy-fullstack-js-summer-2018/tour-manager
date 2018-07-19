@@ -2,24 +2,24 @@ const { assert } = require('chai');
 const Tour = require('../../lib/models/tour');
 const { getErrors } = require('./helpers');
 
-describe('Circus tour model', () => {
-    const data = {
-        title: 'Avocado Toast and Circuses',
-        activities: ['juggling', 'elephants', 'cotton candy'],
-        launchDate: new Date,
-        stops: [
-            {
-                location: {
-                    city: 'Portland'
-                },
-                weather: {
-                    temperature: 90
-                },
-                attendance: 20
-            }
-        ]
-    };
+const data = {
+    title: 'Avocado Toast and Circuses',
+    activities: ['juggling', 'elephants', 'cotton candy'],
+    launchDate: new Date,
+    stops: [
+        {
+            location: {
+                city: 'Portland'
+            },
+            weather: {
+                temperature: 90
+            },
+            attendance: 20
+        }
+    ]
+};
 
+describe('Circus tour model', () => {
     it('validates good model', () => {
         const tour = new Tour(data);
         const json = tour.toJSON();
@@ -37,7 +37,7 @@ describe('Circus tour model', () => {
 
     it('checks that the minimum number for attendance is 1', () => {
         const tour = new Tour({
-            title: 'The Dopest Show in the World',
+            title: 'Avocado Toast and Circuses',
             stops: [
                 {
                     location: {
