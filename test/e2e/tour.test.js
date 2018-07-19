@@ -19,8 +19,8 @@ describe('Tours API', () => {
             .then(({ body }) => body);
     }
 
-    let cirqueDuSoleil_1;
-    let cirqueDuSoleil_2;
+    let cirque1;
+    let cirque2;
     let circuses = [];
 
     beforeEach(() => {
@@ -42,8 +42,8 @@ describe('Tours API', () => {
             }]
         })
             .then(data => {
-                cirqueDuSoleil_1 = data;
-                circuses[0] = cirqueDuSoleil_1;
+                cirque1 = data;
+                circuses[0] = cirque1;
             });
     });
 
@@ -66,31 +66,48 @@ describe('Tours API', () => {
             }]
         })
             .then(data => {
-                cirqueDuSoleil_2 = data;
-                circuses[1] = cirqueDuSoleil_2;
+                cirque2 = data;
+                circuses[1] = cirque2;
             });
     });
 
     it('saves a tour', () => {
-        assert.isOk(cirqueDuSoleil_1._id);
+        assert.isOk(cirque1._id);
     });
     it('saves another tour', () => {
-        assert.isOk(cirqueDuSoleil_2._id);
+        assert.isOk(cirque2._id);
     });
 
     it('gets a tour by id', () => {
         return request
-            .get(`/api/tours/${cirqueDuSoleil_1._id}`)
+            .get(`/api/tours/${cirque1._id}`)
             .then(({ body }) => {
-                assert.deepEqual(body, cirqueDuSoleil_1);
+                assert.deepEqual(body, cirque1);
             });
     });
 
     it('gets all tours', () => {
         return request
             .get('/api/tours')
-            .then(({ body}) => {
+            .then(({ body }) => {
                 assert.deepEqual(body, circuses);
             });
     });
+
+    it('updates a tour', () => {
+        cirque1.title = 'The Beatles: Love';
+        return request
+            .put(`/api/tours/${cirque1._id}`)
+            .send(cirque1)
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.deepEqual(body.title, 'The Beatles: Love');
+            });
+    });
+
+    // it('posts stops to tour', () => {
+        
+    // })
+
+
 });
