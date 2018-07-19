@@ -1,15 +1,6 @@
 const { assert } = require('chai');
+const createWunderground = require('../../lib/util/create-wunderground');
 
-function createMiddleware(api) {
-    return (req, res, next) => {
-        return api(req.body.zip)
-            .then(({ location, weather }) => {
-                req.body.location = location;
-                req.body.weather = weather;
-                next();
-            });
-    };
-}
 
 it('finds city, state, and weather for a zip', done => {
     const weather = { 
@@ -39,7 +30,6 @@ it('finds city, state, and weather for a zip', done => {
         done();
     };
 
-    const middleware = createMiddleware(wunderground);
+    const middleware = createWunderground(wunderground);
     middleware(req, null, next);
-
 });
