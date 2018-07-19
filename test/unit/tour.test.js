@@ -35,4 +35,15 @@ describe('Pirate model', () => {
         const errors = getErrors(tour.validateSync(), 1);
         assert.equal(errors.name.kind, 'required');
     });
+
+    it('tests min attendance of 1', () => {
+        const tour = new Tour({
+            name: 'Circus Circus',
+            stops: [{
+                attendance: 0
+            }]
+        });
+        const errors = getErrors(tour.validateSync(), 1);
+        assert.equal(errors['stops.0.attendance'].kind, 'min');
+    });
 });
