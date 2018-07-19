@@ -2,7 +2,7 @@ const { assert } = require('chai');
 const weatherService = require('../../lib/util/weather-service');
 
 
-it('gets the city, state, weather and conditions for a tour stop', done => {
+it.skip('gets the city, state, weather and conditions for a tour stop', done => {
     const weather = {
         temperature: 80,
         condition: 'hot'
