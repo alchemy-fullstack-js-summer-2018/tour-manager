@@ -7,7 +7,7 @@ describe('Tour model', () => {
     it('validates good model', () => {
         const data = {
             title: 'Tables & Chairs',
-            activities: ['pony rides', 'dancing bears', 'band'],
+            activities: ['pony rides', 'dancing bears', 'band', 'snacks'],
             launchDate: new Date(2019, 2, 18),
             stops: [
                 {
@@ -17,8 +17,8 @@ describe('Tour model', () => {
                         zip: '96813'
                     },
                     weather: {
-                        temperature: 82,
-                        condition: 'cloudy'
+                        temperature: '80.4 F (26.9 C)',
+                        condition: 'Cloudy'
                     },
                     attendance: 1800
                 },
@@ -29,8 +29,8 @@ describe('Tour model', () => {
                         zip: '97212'
                     },
                     weather: {
-                        temperature: 92,
-                        condition: 'sunny'
+                        temperature: '92 F',
+                        condition: 'Sunny'
                     },
                     attendance: 600
                 }

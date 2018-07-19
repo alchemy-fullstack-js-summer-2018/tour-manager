@@ -1,7 +1,7 @@
 const request = require('superagent');
 const apiKey = process.env.WU_API_KEY;
 
-if (!apiKey) {
+if(!apiKey) {
     console.log('No API key present!');
     process.exit(1);
 }
@@ -35,7 +35,7 @@ module.exports = function getLocationWeather(zip) {
     return Promise.all([
         get(getWeather(zip)).then(processWeatherData),
         get(getLocation(zip)).then(processLocationData)
-    ]).then(([ weather, location ]) => {
+    ]).then(([weather, location]) => {
         return { weather, location };
     });
-}
+};

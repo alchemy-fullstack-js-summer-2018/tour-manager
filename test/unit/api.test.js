@@ -1,11 +1,22 @@
 const { assert } = require('chai');
-const createMiddleware = require('../../lib/util/create-wunderground');
+// const createLocationWeather = require('../../lib/util/create-location');
+
+function createLocationWeather(api) {
+    return (req, res, next) => {
+        return api(req.body.zip)
+            .then(data => {
+                req.body = data;
+                next();
+            });
+    };
+    
+}
 
 
 it('finds city, state, and weather for a zip', done => {
     const weather = { 
-        temperature: 82,
-        condition: 'cloudy'
+        temperature: '80.4 F (26.9 C)',
+        condition: 'Cloudy'
     };
     const location = {
         city: 'Honolulu',
@@ -13,7 +24,7 @@ it('finds city, state, and weather for a zip', done => {
         zip: '96813'
     };
 
-    const wunderground = zip => {
+    const getLocationWeather = zip => {
         assert.equal(zip, '96813');
         return Promise.resolve({
             weather, location
@@ -30,6 +41,6 @@ it('finds city, state, and weather for a zip', done => {
         done();
     };
 
-    const middleware = createMiddleware(wunderground);
-    middleware(req, null, next);
+    const getLocation = createLocationWeather(getLocationWeather);
+    getLocation(req, null, next);
 });
