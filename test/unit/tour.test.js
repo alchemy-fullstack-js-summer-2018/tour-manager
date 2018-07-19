@@ -7,7 +7,7 @@ describe('Tour model', () => {
     it('Validates good model', () => {
         const data = {
             title: 'Grand Tour',
-            activities: ['racing'],
+            activities: ['racing', 'drifting', 'drinking'],
             launchDate: new Date,
             stops: [{
                 location: {

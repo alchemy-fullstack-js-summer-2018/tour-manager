@@ -11,7 +11,7 @@ describe('Tour API', () => {
     beforeEach(() => {
         const data = {
             title: 'Grand Tour',
-            activities: ['racing'],
+            activities: ['racing', 'drifting', 'drinking'],
             launchDate: new Date,
             stops: [{
                 location: {
@@ -32,6 +32,14 @@ describe('Tour API', () => {
 
     it('Saves a tour', () => {
         assert.isOk(tour._id);
+    });
+
+    it('Gets a tour by Id', () => {
+        return request
+            .get(`/api/tours/${tour._id}`)
+            .then(({ body }) => {
+                assert.deepEqual(body, tour);
+            });
     });
 
 });
