@@ -17,7 +17,17 @@ describe('Tours API', () => {
             title: 'Tables & Chairs',
             activities: ['pony rides', 'dancing bears', 'band', 'snacks'],
             launchDate: new Date(2019, 2, 18),
-            stops: []
+            stops: [{
+                location: {
+                    city: 'Portland',
+                    state: 'OR',
+                    zip: '97212'
+                },
+                weather: {
+                    temperature: '92 F',
+                    condition: 'Sunny'
+                }
+            }]
         };
         return request
             .post('/api/tours')
@@ -54,7 +64,7 @@ describe('Tours API', () => {
             });
     });
 
-    it('should POST a stop to a tour', () => {
+    it.skip('should POST a stop to a tour', () => {
         const data = { zip: '96813' };
         const location = {
             city: 'Honolulu',
@@ -71,6 +81,11 @@ describe('Tours API', () => {
                 assert.isDefined(body.weather.condition);
             });
     });
+
+    // it('should DELETE a stop', () => {
+    //     return request
+    //         .del()
+    // });
 
     describe('Tours API - error handler', () => {
 
