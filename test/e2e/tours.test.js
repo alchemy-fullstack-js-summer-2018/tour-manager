@@ -45,4 +45,16 @@ describe('Tours API', () => {
                 assert.deepEqual(body, tables);
             });
     });
+
+    describe('Tours API - error handler', () => {
+
+        it('should throw 404 error on bad path', () => {
+            return request
+                .get('/api/stops')
+                .then(res => {
+                    assert.equal(res.status, 404);
+                });
+        });
+    });
+
 });
