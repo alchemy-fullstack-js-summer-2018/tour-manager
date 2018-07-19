@@ -1,7 +1,7 @@
 {
   "name": "tour-manager",
   "version": "1.0.0",
-  "main": "weather-service-example.js",
+  "main": "index.js",
   "scripts": {
     "lint": "eslint .",
     "pretest": "npm run lint",
