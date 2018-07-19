@@ -6,13 +6,9 @@ describe('Tour model', () => {
 
     it('validates good model', () => {
         const data = {
-            title: {
-                type: 'P.T. Barnum\'s Circus at London',
-            },
+            title: 'P.T. Barnum\'s Circus at London',
             activities: ['tightrope', 'trapeze', 'lion tamer'],
-            launchDate: {
-                type: 'July 18th, 2018',
-            },
+            launchDate: new Date(2018, 7, 18),
             stops: [
                 {
                     location: {
@@ -44,6 +40,7 @@ describe('Tour model', () => {
 
         const json = tour.toJSON();
         delete json._id;
+        json.stops.forEach(s => delete s._id);
         assert.deepEqual(json, data);
         assert.isUndefined(tour.validateSync());
     });
