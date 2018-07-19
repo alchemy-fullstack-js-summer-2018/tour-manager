@@ -1,16 +1,16 @@
 const chai = require('chai');
 const { assert } = chai;
 const Tour = require('../../lib/models/tour');
-// const { getErrors } = require('./helpers');
+const { getErrors } = require('./helpers');
 
 describe('Tour data model', () => {
 
-    const getErrors = (validation, numberExpected) => {
-        assert.isDefined(validation);
-        const errors = validation.errors;
-        assert.equal(Object.keys(errors).length, numberExpected);
-        return errors;
-    };
+    // const getErrors = (validation, numberExpected) => {
+    //     assert.isDefined(validation);
+    //     const errors = validation.errors;
+    //     assert.equal(Object.keys(errors).length, numberExpected);
+    //     return errors;
+    // };
     
     it('validates a good model', () => {
         const data = {
