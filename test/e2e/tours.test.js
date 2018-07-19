@@ -44,9 +44,17 @@ describe('Tours API', () => {
                 console.log('**', body);
                 assert.deepEqual(body, [tour2, tour3]);
             });
-
-
     });
+
+    it('gets a tour by id', () => {
+        return request
+            .get(`/api/tours/${tour2._id}`)
+            .then(({ body }) => {
+                assert.deepEqual(body, tour2);
+            });
+    });
+
+
 });
 
  
