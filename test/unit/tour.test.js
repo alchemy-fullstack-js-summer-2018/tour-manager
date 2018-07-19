@@ -25,4 +25,14 @@ describe('Tour model', () => {
         assert.deepEqual(json, data);
         assert.isUndefined(tour.validateSync());
     });
+
+    it('Validates required fields', () => {
+        const tour = new Tour({});
+        const validation = tour.validateSync();
+        assert.isDefined(validation);
+
+        const errors = validation.errors;
+        assert.equal(Object.keys(errors).length, 1);
+        assert.equal(errors.title.kind, ('required'));
+    });
 });
