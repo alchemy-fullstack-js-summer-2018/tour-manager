@@ -91,6 +91,17 @@ describe('Tours API', () => {
             });
     });
 
+    it('should PUT a stop with attendance', () => {
+        const data = { attendance: 905 };
+        return request
+            .put(`/api/tours/${tables._id}/stops/${tables.stops[0]._id}/attendance`)
+            .send(data)
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.equal(body.stops[0].attendance, 905);
+            });
+    });
+
     describe('Tours API - error handler', () => {
 
         it('should throw 404 error on bad path', () => {
