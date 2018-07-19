@@ -43,5 +43,5 @@
     "lib": "lib",
     "test": "test"
   },
-  "description": ""
+  "description": "## Project Description A database featuring a circus tour schedule."
 }
