@@ -46,4 +46,13 @@ describe('Tours API', () => {
                 assert.deepEqual(body, [tourA, tourB]);
             });
     });
+
+    it('gets one tour by id', () => {
+        return request
+            .get(`/api/tours/${tourA._id}`)
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.deepEqual(body, tourA);
+            });
+    });
 });
