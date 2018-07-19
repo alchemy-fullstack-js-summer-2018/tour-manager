@@ -41,19 +41,31 @@ describe('Tours API', () => {
             })
             .then(checkOk)
             .then(({ body }) => {
-                console.log('**', body);
                 assert.deepEqual(body, [tour2, tour3]);
             });
     });
-
+        
     it('gets a tour by id', () => {
         return request
             .get(`/api/tours/${tour2._id}`)
+            .then(({ body }) => {
+                console.log('*****', body);
+                assert.deepEqual(body, tour2);
+            });
+    });
+        
+    it('updates a tour with attendance', () => {
+        tour2.stops.attendance = 500;
+        return request
+            .put(`/api/tours/${tour2._id}`)
+            .send(tour2)
+            .then(checkOk)
             .then(({ body }) => {
                 assert.deepEqual(body, tour2);
             });
     });
 
+    
 
 });
 
