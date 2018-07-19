@@ -38,4 +38,32 @@ describe('Tour model', () => {
         assert.equal(errors.title.kind, 'required');  
     });
 
+    // it('tour stop validation', () => {
+    //     const tour = new Tour({
+    //         title: 'tour',
+    //         stops: [{}]
+    //     });
+    //     const errors = getErrors(tour.validateSync(), 1);
+
+    //     assert.deepEqual(errors['stops.0.location'].kind);
+    // //     // assert.deepEqual(['stops.weather.kind,']);
+    // //     // assert.deepEqual(['stops.attendance.kind,']);
+    // });
+
+    it('stop attendance is min 1', () => {
+        const tour = new Tour({
+            title: 'tour',
+            stops: [{
+                location: 'stop 1',
+                weather: 80,
+                attendance: 0
+            }]
+        });
+
+        const errors = getErrors(tour.validateSync(), 1);
+        assert.equal(errors['stops.0.attendance'].kind, 'min');
+    });
+
+
+
 });
