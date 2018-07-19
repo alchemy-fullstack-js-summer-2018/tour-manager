@@ -50,4 +50,12 @@ describe.only('Tours API', () => {
     it('saves a tour', () => {
         assert.isOk(tour._id);
     });
+
+    it('returns a tour by id on GET', () => {
+        return request
+            .get(`/api/tours/${tour._id}`)
+            .then(({ body }) => {
+                assert.deepEqual(body, tour);
+            });
+    });
 });
