@@ -137,4 +137,8 @@ describe('Tour API', () => {
             });
     });
 
+    it.skip('Update a stop with number of attendees', () => {
+
+    });
+
 });
