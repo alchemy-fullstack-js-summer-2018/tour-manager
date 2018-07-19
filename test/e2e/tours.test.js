@@ -135,4 +135,36 @@ describe('Tours API', () => {
                 assert.deepEqual(body, tourA);
             });
     });
+
+    function addStop(tour, stop) {
+        return request
+            .post(`/api/tours/${tourA._id}/stops`)
+            .send(stop)
+            .then(checkOk)
+            .then(({ body }) => body);
+    }
+
+    it('adds a stop to a tour', () => {
+        const stop = {
+            location: {
+                city: 'Austin',
+                state: 'Texas',
+                zip: 33039
+            },
+            weather: {
+                temperature: 100,
+                condition: 'Heat Warning'
+            },
+            attendance: 9500
+        };
+        return addStop(tourA, stop)
+            .then(_stop => {
+                assert.isDefined(_stop._id);
+                assert.equal(_stop.attendance, stop.attendance);
+            });
+    });
+
+    // it('deletes a stop from the tour', () => {
+
+    // });
 });
