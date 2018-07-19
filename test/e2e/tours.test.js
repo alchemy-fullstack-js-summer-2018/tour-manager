@@ -65,7 +65,21 @@ describe('Tours API', () => {
             });
     });
 
-    
+    it('removes a tour', () => {
+        return request
+            .delete(`/api/tours/${tour2._id}`)
+            .then(checkOk)
+            .then(res => {
+                assert.deepEqual(res.body, { removed: true });
+                return request.get('/api/tours');
+            })
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.deepEqual(body, []);
+            });
+    });
+
+
 
 });
 
