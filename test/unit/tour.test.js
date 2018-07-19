@@ -1,5 +1,5 @@
 const { assert } = require('chai');
-//const { getErrors } = require('./helpers');
+const { getErrors } = require('./helpers');
 const Tour = require('../../lib/models/tour');
 
 describe('Tour model', () => {
@@ -41,5 +41,22 @@ describe('Tour model', () => {
         json.stops.forEach(s => delete s._id);
         assert.deepEqual(json, data);
         assert.isUndefined(tour.validateSync());
+    });
+
+    it('validates that the Tour title is required', () => {
+        const tour = new Tour({});
+        const errors = getErrors(tour.validateSync(), 1);
+        assert.equal(errors.title.kind, 'required');
+    });
+
+    it('makes sure attendance is a minimum of 1', () => {
+        const tour = new Tour({
+            title: 'World of Walruses 2018',
+            stops: [{
+                attendance: 0
+            }]
+        });
+        const errors = getErrors(tour.validateSync(), 1);
+        assert.equal(errors['stops.0.attendance'.kind, 'min']);
     });
 });
