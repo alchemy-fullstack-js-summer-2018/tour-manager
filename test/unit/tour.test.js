@@ -5,7 +5,7 @@ const Tour = require('../../lib/models/tour');
 describe('Pirate model', () => {
     it('validates good model', () => {
         const data = {
-            name: 'Cirque du Soleil',
+            title: 'Cirque du Soleil',
             activities: ['contortion', 'trapeze'],
             lunchDate: new Date(),
             stops: [{
@@ -33,12 +33,12 @@ describe('Pirate model', () => {
     it('tests required fields', () => {
         const tour = new Tour({});
         const errors = getErrors(tour.validateSync(), 1);
-        assert.equal(errors.name.kind, 'required');
+        assert.equal(errors.title.kind, 'required');
     });
 
     it('tests min attendance of 1', () => {
         const tour = new Tour({
-            name: 'Circus Circus',
+            title: 'Circus Circus',
             stops: [{
                 attendance: 0
             }]
