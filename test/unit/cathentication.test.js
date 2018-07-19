@@ -12,12 +12,12 @@
 
 //     it('calls next when password is correct', () => {
 //         // use factory to create a middleware instance with password set
-//         const authMiddleware = createCathentication('meow');
+//         const authMiddleware = createCathentication('roar');
 
 //         // setup of our mocks
 //         const req = {
 //             query: {
-//                 password: 'meow'
+//                 password: 'roar'
 //             }
 //         };
 
@@ -33,12 +33,12 @@
 
 //     it('Return 401 when password is incorrect', () => {
 //         // use factory to create a middleware instance with password set
-//         const authMiddleware = createCathentication('meow');
+//         const authMiddleware = createCathentication('roar');
 
 //         // setup of our mocks
 //         const req = {
 //             query: {
-//                 password: 'woof'
+//                 password: 'squeak'
 //             }
 //         };
 
