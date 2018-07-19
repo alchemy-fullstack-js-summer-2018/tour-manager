@@ -50,4 +50,24 @@ describe('Tour model', () => {
         const errors = getErrors(tour.validateSync(), 1);
         assert.equal(errors.title.kind, 'required');
     });
+
+    it('validates default launch date is now', () => {
+        const now = new Date();
+        const tour = new Tour({
+            title: 'Spoobombing Hackey Stoppers'
+        });
+        const launchDate = tour.toJSON().launchDate;
+        assert.isAtLeast(launchDate, now);
+    });
+
+    it('validates attendance for stops is minimum of 1', () => {
+        const tour = new Tour({
+            title: 'Spoobombing Hackey Stoppers',
+            stops: [{ attendance: -1 }]
+        });
+        const errors = getErrors(tour.validateSync(), 1);
+        assert.equal(errors['stops.0.attendance'].kind, 'min');
+    });
+
+    
 });
