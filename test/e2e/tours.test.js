@@ -2,6 +2,11 @@ const { assert } = require('chai');
 const request = require('./request');
 const { dropCollection  } = require('./_db');
 
+const checkOk = res => {
+    assert.equal(res.status, 200, 'expected 200 http status code');
+    return res;
+};
+
 describe.only('Tours API', () => {
 
     beforeEach(() => dropCollection('tours'));
@@ -56,6 +61,38 @@ describe.only('Tours API', () => {
             .get(`/api/tours/${tour._id}`)
             .then(({ body }) => {
                 assert.deepEqual(body, tour);
+            });
+    });
+
+    it('returns list of tours on GET', () => {
+        return request
+            .get('/api/tours')
+            .then(({ body }) => {
+                assert.deepEqual(body[0].title, tour.title);
+            });
+    });
+
+    it('updates a tour on PUT', () => {
+        tour.title = 'For the Benefit of Mr.Kite';
+        return request
+            .put(`/api/tours/${tour._id}`)
+            .send(tour)
+            .then(({ body }) => {
+                assert.deepEqual(body, tour);
+            });
+    });
+
+    it.only('removes a tour on DELETE', () => {
+        return request
+            .del(`/api/tours/${tour._id}`)
+            .then(checkOk)
+            .then(res => {
+                assert.deepEqual(res.body, { removed: true });
+                return request.get('/api/tours');
+            })
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.deepEqual(body, []);
             });
     });
 });
