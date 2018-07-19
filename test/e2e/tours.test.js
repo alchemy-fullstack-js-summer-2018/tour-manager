@@ -1,6 +1,7 @@
 const { assert } = require('chai');
 const request = require('./request');
 const { dropCollection } = require('./db');
+const getLocationWeather = require('../../weather-service-example');
 
 const checkOk = res => {
     assert.equal(res.status, 200, 'expected http 200 status code');
@@ -8,6 +9,14 @@ const checkOk = res => {
 };
 
 describe('Tours API', () => {
+
+    it('gets back data for a given zip code', () => {
+        return getLocationWeather(97209)
+            .then(({ body }) => {
+                console.log(body);
+            });
+
+    });
 
     beforeEach(() => dropCollection('tours'));
 
@@ -27,8 +36,8 @@ describe('Tours API', () => {
             stops: [
                 {
                     location: {
-                        city: 'Portland',
-                        state: 'Oregon',
+                        // city: 'Portland',
+                        // state: 'Oregon',
                         zip: 97209
                     },
                     weather: {
@@ -39,8 +48,8 @@ describe('Tours API', () => {
                 },
                 {
                     location: {
-                        city: 'Seattle',
-                        state: 'Washington',
+                        // city: 'Seattle',
+                        // state: 'Washington',
                         zip: 98101
                     },
                     weather: {
@@ -51,8 +60,8 @@ describe('Tours API', () => {
                 },
                 {
                     location: {
-                        city: 'Boise',
-                        state: 'Idaho',
+                        // city: 'Boise',
+                        // state: 'Idaho',
                         zip: 83701
                     },
                     weather: {
