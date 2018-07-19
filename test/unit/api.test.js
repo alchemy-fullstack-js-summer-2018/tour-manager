@@ -1,20 +1,16 @@
 const { assert } = require('chai');
 
-
+function createMiddleware(api) {
+    return (req, res, next) => {
+        api(req.body.zip)
+            .then(data => {
+                req.body = data;
+                next();
+            });
+    };
+}
 describe('the weather API', () => {
-    function createMiddleware(api) {
-        return (req, res, next) => {
-            req.body = api(req.body.zip);
-            // console.log('**DATA**', data);
-            console.log('**REQ**', req);
-            // console.log('**RES**', res);
-            // console.log('**NEXT**', next);
-    
-            next();
-        };
-    }
     it('gets the location and weather info for a given zip', done => {
-
         const location = {
             city: 'Portland',
             state: 'Oregon'
@@ -22,6 +18,12 @@ describe('the weather API', () => {
         const weather = {
             temperature: 83,
             condition: 'Windy'
+        };
+        
+        const req = {
+            body: {
+                zip: '97205'
+            }
         };
     
         const api = zip => {
@@ -33,21 +35,13 @@ describe('the weather API', () => {
     
         
         const next = () => {
-            console.log('**IN NEXT**', req.body);
-            assert.deepEqual(weather, req);
+            assert.deepEqual(weather, req.body.weather);
+            assert.deepEqual(location, req.body.location);
             done();
         };
+
         const middleware = createMiddleware(api);
-        
-        const req = {
-            body: {
-                zip: '97205'
-            }
-        };
-    
         middleware(req, null, next);
     
-        // console.log('***LOWER MOST CONSOLE***', req.body);
-        // assert.deepEqual(weather, req.body);
     });
 });
