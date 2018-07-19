@@ -2,9 +2,12 @@ const { assert } = require('chai');
 
 function createMiddleware(api) {
     return (req, res, next) => {
-        const data = api(req.body.zip);
-        console.log(data);
-        next();
+        return api(req.body.zip)
+            .then(({ location, weather }) => {
+                req.body.location = location;
+                req.body.weather = weather;
+                next();
+            });
     };
 }
 
@@ -19,26 +22,24 @@ it('finds city, state, and weather for a zip', done => {
         zip: '96813'
     };
 
-    const api = zip => {
+    const wunderground = zip => {
         assert.equal(zip, '96813');
         return Promise.resolve({
             weather, location
         });
     };
 
-    const middleware = createMiddleware(api);
+    const req = {
+        body: { zip: '96813' }
+    };
 
     const next = () => {
-        
+        assert.deepEqual(req.body.location, location, 'location missing');
+        assert.deepEqual(req.body.weather, weather, 'weather missing');
         done();
     };
 
-    const req = {
-        body: {
-            zip: '96813'
-        }
-    };
-
+    const middleware = createMiddleware(wunderground);
     middleware(req, null, next);
 
 });
