@@ -1,6 +1,8 @@
 const request = require('superagent');
 const apiKey = process.env.WU_API_KEY;
 
+// WU_API_KEY=5e1af6276eda1937
+
 if (!apiKey) {
     console.log('No API key present!');
     process.exit(1);
