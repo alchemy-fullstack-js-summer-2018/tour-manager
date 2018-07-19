@@ -1,9 +1,9 @@
 const { assert } = require('chai');
 const { createMiddleware } = require('../../lib/utils/middleware');
 
-describe.only('Middleware tests', () => {
+describe('Middleware tests', () => {
 
-    it.only('handles async', done => {
+    it('handles async', done => {
         const weather = {
             temperature: '',
             condition: ''
@@ -47,9 +47,5 @@ describe.only('Middleware tests', () => {
         };
 
         middleware(req, null, next);
-    });
-
-    it('takes a zip when a stop is added', () => {
-
     });
 });
