@@ -18,16 +18,24 @@ describe('Tours API', () => {
             .then(checkOk)
             .then(({ body }) => body);
     }
-    let tour;
+    let tourA;
+    let tourB;
     beforeEach(() => {
         return save({ title: 'Amazing Tour' })
             .then(data => {
-                tour = data;
+                tourA = data;
+            });
+    });
+    beforeEach(() => {
+        return save({ title: 'Incredible Tour' })
+            .then(data => {
+                tourB = data;
             });
     });
 
     it('saves a tour', () => {
-        assert.isOk(tour._id);
+        assert.isOk(tourA._id);
+        assert.isOk(tourB._id);
     });
 
     it('gets all tours', () => {
@@ -35,7 +43,7 @@ describe('Tours API', () => {
             .get('/api/tours')
             .then(checkOk)
             .then(({ body }) => {
-                assert.deepEqual(body, [tour]);
+                assert.deepEqual(body, [tourA, tourB]);
             });
     });
 });
