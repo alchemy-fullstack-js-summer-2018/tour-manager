@@ -8,7 +8,7 @@ describe('Tour data model', () => {
         const data = {
             title: 'The Amazing Tour!',
             activities: ['fire breathing', 'chimpanzees', 'creepy clowns'],
-            launchDate: Date.now(),
+            launchDate: new Date(),
             stops: [
                 {
                     location: {
@@ -48,6 +48,12 @@ describe('Tour data model', () => {
                 },
             ]
         };
-        
+        const tour = new Tour(data);
+
+        const json = tour.toJSON();
+        delete json._id;
+        json.stops.forEach(s => delete s._id);
+        console.log(json);
+        assert.deepEqual(json, data);
     });
 });
