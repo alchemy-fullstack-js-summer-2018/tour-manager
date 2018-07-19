@@ -58,12 +58,7 @@ describe('Circus Tours API', () => {
         return request
             .get('/api/tours')
             .then(({ body }) => {
-                assert.equal(body[0].title, soleilTour.title);
-                assert.equal(body[1].title, ringlingTour.title);
-                assert.equal(body[2].title, barnumTour.title);
-                assert.deepEqual(body[0].activities, soleilTour.activities);
-                assert.deepEqual(body[1].activities, ringlingTour.activities);
-                assert.deepEqual(body[2].activities, barnumTour.activities);
+                assert.deepEqual(body, [soleilTour, ringlingTour, barnumTour]);
             });
     });
 
@@ -71,7 +66,7 @@ describe('Circus Tours API', () => {
         return request
             .get(`/api/tours/${ringlingTour._id}`)
             .then(({ body }) => {
-                assert.deepEqual(body.activities, ringlingTour.activities);
+                assert.deepEqual(body, ringlingTour);
             });
     });
 
@@ -93,10 +88,7 @@ describe('Circus Tours API', () => {
                 return request.get('/api/tours');
             })
             .then(({ body }) => {
-                assert.equal(body[0].title, ringlingTour.title);
-                assert.equal(body[1].title, barnumTour.title);
-                assert.deepEqual(body[0].activities, ringlingTour.activities);
-                assert.deepEqual(body[1].activities, barnumTour.activities);
+                assert.deepEqual(body, [ringlingTour, barnumTour]);
             });
     });
 
@@ -129,4 +121,23 @@ describe('Circus Tours API', () => {
             });
     });
 
+    it('removes a stop from a tour', () => {
+        const stop = {
+            attendance: 30
+        };
+
+        return request
+            .post(`/api/tours/${barnumTour._id}/stops`)
+            .send(stop)
+            .then(stop => {
+                return request
+                    .delete(`/api/tours/${barnumTour._id}/stops/${stop.body._id}`);
+            })
+            .then(() => {
+                return request.get(`/api/tours/${barnumTour._id}`);
+            })
+            .then(({ body }) => {
+                assert.equal(body.stops.length, 0);
+            });
+    });
 });
