@@ -86,5 +86,11 @@ describe('Tours API', () => {
             });
     });
 
-    it()
+    it('gets all tours', () => {
+        return request
+            .get('/api/tours')
+            .then(({ body}) => {
+                assert.deepEqual(body, circuses);
+            });
+    });
 });
