@@ -10,7 +10,7 @@ const checkOk = res => {
 
 describe('Tours API', () => {
 
-    before(() => dropCollection('tours'));
+    beforeEach(() => dropCollection('tours'));
     
     function save(tour) {
         return request
@@ -31,7 +31,22 @@ describe('Tours API', () => {
     it('saves a tour', () => {
         assert.isOk(tour2._id);
     });
-    
+
+    it('gets all tours', () => {
+        let tour3;
+        return save({ title: 'Tour3' })
+            .then(_tour3 => {
+                tour3 = _tour3;
+                return request.get('/api/tours');
+            })
+            .then(checkOk)
+            .then(({ body }) => {
+                console.log('**', body);
+                assert.deepEqual(body, [tour2, tour3]);
+            });
+
+
+    });
 });
 
  
