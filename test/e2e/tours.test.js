@@ -58,8 +58,7 @@ describe('Tours API', () => {
                     weather: {
                         temperature: 55,
                         condition: 'Chilly'
-                    },
-                    attendance: 1000
+                    }
                 },
             ] })
             .then(data => {
@@ -112,12 +111,25 @@ describe('Tours API', () => {
                 tourB = data;
             });
     });
-
+    
+    // it.only('updates the attendance of a stop', () => {
+    //     let stop = {};
+    //     stop.attendance = '1000';
+    //     return request
+    //         .post(`/api/tours/${tourA._id}/stops/${tourA.stops[0]._id}/attendance`)
+    //         .send(stop.attendance)
+    //         .then(checkOk)
+    //         .then(({ body }) => {
+    //             console.log('****CONSOLE****', body);
+    //             assert.deepEqual(body.stops[0].attendance, stop.attendance);
+    //         });
+    // });
+    
     it('saves a tour', () => {
         assert.isOk(tourA._id);
         assert.isOk(tourB._id);
     });
-
+    
     it('gets all tours', () => {
         return request
             .get('/api/tours')
@@ -180,7 +192,6 @@ describe('Tours API', () => {
 
         return addStop(tourA, newStop)
             .then(stop => {
-                console.log('stop', stop);
                 return request
                     .delete(`/api/tours/${tourA._id}/stops/${stop._id}`);
             })
@@ -193,4 +204,5 @@ describe('Tours API', () => {
                 assert.equal(body.stops.length, 3);
             });
     });
+
 });
