@@ -7,13 +7,15 @@ describe('Tour model', () => {
     it('Validates good model', () => {
         const data = {
             title: 'Grand Tour',
-            activities: ['racing', 'drifting', 'time trail'],
-            // launchDate: Date,
+            activities: ['racing'],
+            launchDate: new Date,
             stops: [{
-                city: 'Portland',
-                state: 'Oregon',
-                zip: 97020,
-                weather: 'rain',
+                location: {
+                    city: 'Portland'
+                },
+                weather: {
+                    temperature: 50
+                },
                 attendance: 2
             }]
         };
