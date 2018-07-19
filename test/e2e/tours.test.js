@@ -14,7 +14,7 @@ describe.skip('Tours API', () => {
     function save(tour) {
         console.log('*****');
         return request
-            .post('api/tours')
+            .post('/api/tours')
             .send(tour)
             .then(checkOk)
             .then(({ body }) => body);
