@@ -15,7 +15,7 @@ describe('Tour model', () => {
                     state: 'OR',                        
                     zip: 97203,
                 },
-                weather: 97203,
+                // weather: 97203,
                 attendance: 1000,
             }],
         };

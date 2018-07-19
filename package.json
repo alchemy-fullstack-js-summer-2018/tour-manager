@@ -5,7 +5,6 @@
   "main": "weather-service-example.js",
   "scripts": {
     "lint": "eslint .",
-    "pretest": "npm run lint",
     "test": "npm run test:run",
     "test:run": "mocha --recursive",
     "test:unit": "npm run test:run -- ./test/unit",
