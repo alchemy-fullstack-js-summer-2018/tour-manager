@@ -1,0 +1,41 @@
+{
+  "name": "tour-manager",
+  "version": "1.0.0",
+  "description": "",
+  "main": "weather-service-example.js",
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "mocha": "mocha",
+    "test": "npm run mocha",
+    "test:watch": "nodemon --exec 'npm run mocha -s'",
+    "start": "node server.js",
+    "start:watch": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/soundparticle/tour-manager.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/soundparticle/tour-manager/issues"
+  },
+  "homepage": "https://github.com/soundparticle/tour-manager#readme",
+  "dependencies": {
+    "dotenv": "^6.0.0",
+    "eslint": "^5.1.0",
+    "express": "^4.16.3",
+    "install": "^0.12.1",
+    "mocha": "^5.2.0",
+    "mongoose": "^5.2.4",
+    "morgan": "^1.9.0",
+    "nodemon": "^1.18.3",
+    "npm": "^6.2.0",
+    "superagent": "^3.8.3"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^4.0.0"
+  }
+}
