@@ -77,4 +77,14 @@ describe('Tours API', () => {
     it('saves another tour', () => {
         assert.isOk(cirqueDuSoleil_2._id);
     });
+
+    it('gets a tour by id', () => {
+        return request
+            .get(`/api/tours/${cirqueDuSoleil_1._id}`)
+            .then(({ body }) => {
+                assert.deepEqual(body, cirqueDuSoleil_1);
+            });
+    });
+
+    it()
 });
