@@ -4,6 +4,13 @@ const Tour = require('../../lib/models/tour');
 // const { getErrors } = require('./helpers');
 
 describe('Tour data model', () => {
+
+    const getErrors = (validation, numberExpected) => {
+        assert.isDefined(validation);
+        const errors = validation.errors;
+        assert.equal(Object.keys(errors).length, numberExpected);
+        return errors;
+    };
     
     it('validates a good model', () => {
         const data = {
@@ -56,5 +63,11 @@ describe('Tour data model', () => {
         json.stops.forEach(s => delete s._id);
         assert.deepEqual(json, data);
         assert.isUndefined(tour.validateSync());
+    });
+
+    it('validates that name is required', () => {
+        const tour = new Tour({});
+        const errors = getErrors(tour.validateSync(), 1);
+        assert.equal(errors.title.kind, 'required');
     });
 });
