@@ -29,4 +29,13 @@ describe('Tours API', () => {
     it('saves a tour', () => {
         assert.isOk(tour._id);
     });
+
+    it('gets all tours', () => {
+        return request
+            .get('/api/tours')
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.deepEqual(body, [tour]);
+            });
+    });
 });
