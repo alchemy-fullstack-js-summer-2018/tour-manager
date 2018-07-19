@@ -105,6 +105,20 @@ describe('Tours API', () => {
             });
     });
 
+    it('removes a tour', () => {
+        return request
+            .delete(`/api/tours/${cirque2._id}`)
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.equal(body.removed, true);
+                return request
+                    .get('/api/tours');
+            })
+            .then(({ body }) => {
+                assert.deepEqual(body, [cirque1]);
+            });
+    });
+
     // it('posts stops to tour', () => {
         
     // })
