@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const connect = require('../../lib/util/connect');
 connect('mongodb://localhost:27017/tour_test');
 const mongoose = require('mongoose');
