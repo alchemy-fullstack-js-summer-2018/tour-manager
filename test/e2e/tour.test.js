@@ -19,34 +19,35 @@ describe('Tours API', () => {
             .then(({ body }) => body);
     }
 
+    
     let cirque1;
     let cirque2;
     let circuses = [];
-
+    
     beforeEach(() => {
         return save({
             title: 'Love',
             activities: ['singing, dancing'],
-            lunchDate: new Date(),
-            stops: [{
-                location: {
-                    city: 'Las Vegas',
-                    state: 'Nevada',
-                    zip: 89109
-                },
-                weather: {
-                    temperature: 99,
-                    condition: 'dry heat'
-                },
-                attendance: 2000
-            }]
+            lunchDate: new Date()
+            // stops: [{
+            //     location: {
+            //         city: 'Las Vegas',
+            //         state: 'Nevada',
+            //         zip: 89109
+            //     },
+            //     weather: {
+            //         temperature: 99,
+            //         condition: 'dry heat'
+            //     },
+            //     attendance: 2000
+            // }]
         })
             .then(data => {
                 cirque1 = data;
                 circuses[0] = cirque1;
             });
     });
-
+                
     beforeEach(() => {
         return save({
             title: 'Zumanity',
@@ -70,14 +71,14 @@ describe('Tours API', () => {
                 circuses[1] = cirque2;
             });
     });
-
+                
     it('saves a tour', () => {
         assert.isOk(cirque1._id);
     });
     it('saves another tour', () => {
         assert.isOk(cirque2._id);
     });
-
+                
     it('gets a tour by id', () => {
         return request
             .get(`/api/tours/${cirque1._id}`)
@@ -85,7 +86,7 @@ describe('Tours API', () => {
                 assert.deepEqual(body, cirque1);
             });
     });
-
+                
     it('gets all tours', () => {
         return request
             .get('/api/tours')
@@ -93,7 +94,7 @@ describe('Tours API', () => {
                 assert.deepEqual(body, circuses);
             });
     });
-
+                
     it('updates a tour', () => {
         cirque1.title = 'The Beatles: Love';
         return request
@@ -104,8 +105,8 @@ describe('Tours API', () => {
                 assert.deepEqual(body.title, 'The Beatles: Love');
             });
     });
-
-    it('removes a tour', () => {
+                
+    it('cancels a tour, no money back', () => {
         return request
             .delete(`/api/tours/${cirque2._id}`)
             .then(checkOk)
@@ -118,10 +119,36 @@ describe('Tours API', () => {
                 assert.deepEqual(body, [cirque1]);
             });
     });
+                
+    function addStop(tour, stop) {
+        return request
+            .post(`/api/tours/${tour._id}/stops`)
+            .send(stop)
+            .then(checkOk)
+            .then(({ body }) => body);
+    }
+    
+    it('adds stop to tour', () => {
+        const data = {
+            location: {
+                city: 'Portland',
+                state: 'Oregon',
+                zip: 97209
+            },
+            weather: {
+                temperature: 75,
+                condition: 'cloudy'
+            },
+            attendance: 13
+        };
 
-    // it('posts stops to tour', () => {
+        return addStop(cirque1, data)
+            .then(stop =>  {
+                assert.isDefined(stop._id);
+                assert.deepEqual(stop.location, data.location);
+            });
         
-    // })
+    });
 
 
 });
