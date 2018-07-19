@@ -7,6 +7,7 @@ describe('Tour API', () => {
     beforeEach(() => dropCollection('tours'));
 
     let tour;
+    let tour2;
 
     beforeEach(() => {
         const data = {
@@ -30,8 +31,41 @@ describe('Tour API', () => {
             .then(({ body }) => tour = body);
     });
 
-    it('Saves a tour', () => {
+    beforeEach(() => {
+        const data = {
+            title: 'Red Tour',
+            activities: ['racing', 'riding', 'running'],
+            launchDate: new Date,
+            stops: [{
+                location: {
+                    city: 'Seattle'
+                },
+                weather: {
+                    temperature: 70
+                },
+                attendance: 4
+            }]
+        };
+
+        return request
+            .post('/api/tours')
+            .send(data)
+            .then(({ body }) => tour2 = body);
+    });
+
+    it('Saves a tour/tours', () => {
         assert.isOk(tour._id);
+        assert.isOk(tour2._id);
+    });
+
+    it('Gets a list of tours', () => {
+        return request
+            .get('/api/tours')
+            .then(({ body }) => {
+                assert.equal(body[0].title, ['Grand Tour']);
+                assert.equal(body[1].title, ['Red Tour']);
+            });
+
     });
 
     it('Gets a tour by Id', () => {
