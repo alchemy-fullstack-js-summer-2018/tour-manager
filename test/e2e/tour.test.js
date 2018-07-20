@@ -28,19 +28,19 @@ describe('Tours API', () => {
         return save({
             title: 'Love',
             activities: ['singing, dancing'],
-            lunchDate: new Date()
-            // stops: [{
-            //     location: {
-            //         city: 'Las Vegas',
-            //         state: 'Nevada',
-            //         zip: 89109
-            //     },
-            //     weather: {
-            //         temperature: 99,
-            //         condition: 'dry heat'
-            //     },
-            //     attendance: 2000
-            // }]
+            lunchDate: new Date(),
+            stops: [{
+                location: {
+                    city: 'Las Vegas',
+                    state: 'Nevada',
+                    zip: 89109
+                },
+                weather: {
+                    temperature: 99,
+                    condition: 'dry heat'
+                },
+                attendance: 2000
+            }]
         })
             .then(data => {
                 cirque1 = data;
@@ -127,7 +127,7 @@ describe('Tours API', () => {
             .then(checkOk)
             .then(({ body }) => body);
     }
-    
+
     it('adds stop to tour', () => {
         const data = {
             location: {
@@ -146,9 +146,45 @@ describe('Tours API', () => {
             .then(stop =>  {
                 assert.isDefined(stop._id);
                 assert.deepEqual(stop.location, data.location);
+                // assert.equal(cirque1.stops.length, 1);
+                // console.log(stop.length);
+            })
+            .then(() => {
+                return request.get(`/api/tours/${cirque1._id}`)
+                    .then(checkOk)
+                    .then(({ body }) => {
+                        assert.equal(body.stops.length, 2);
+                    });
             });
         
     });
 
+    it('removes a stop from tour', () => {
+        const data = {
+            location: {
+                city: 'Portland',
+                state: 'Oregon',
+                zip: 97209
+            },
+            weather: {
+                temperature: 75,
+                condition: 'cloudy'
+            },
+            attendance: 13
+        };
 
+        return addStop(cirque1, data)
+            .then(stop => {
+                return request
+                    .delete(`/api/tours/${cirque1._id}/stops/${stop._id}`);
+            })
+            .then(checkOk)
+            .then(() => {
+                return request.get(`/api/tours/${cirque1._id}`);
+            })
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.equal(body.stops.length, 1);
+            });
+    });
 });
