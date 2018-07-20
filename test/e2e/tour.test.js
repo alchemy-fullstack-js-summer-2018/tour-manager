@@ -74,11 +74,9 @@ describe('Tours API', () => {
                 
     it('saves a tour', () => {
         assert.isOk(cirque1._id);
-    });
-    it('saves another tour', () => {
         assert.isOk(cirque2._id);
     });
-                
+    
     it('gets a tour by id', () => {
         return request
             .get(`/api/tours/${cirque1._id}`)
@@ -146,8 +144,6 @@ describe('Tours API', () => {
             .then(stop =>  {
                 assert.isDefined(stop._id);
                 assert.deepEqual(stop.location, data.location);
-                // assert.equal(cirque1.stops.length, 1);
-                // console.log(stop.length);
             })
             .then(() => {
                 return request.get(`/api/tours/${cirque1._id}`)
@@ -185,6 +181,17 @@ describe('Tours API', () => {
             .then(checkOk)
             .then(({ body }) => {
                 assert.equal(body.stops.length, 1);
+            });
+    });
+
+    it('updates attendance', () => {
+        const data = { attendance: 26 };
+        return request
+            .put(`/api/tours/${cirque1._id}/stops/${cirque1.stops[0]._id}/attendance`)
+            .send(data)
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.equal(body.stops[0].attendance, 26);
             });
     });
 });

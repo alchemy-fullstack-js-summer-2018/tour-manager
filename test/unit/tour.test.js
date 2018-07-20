@@ -46,4 +46,5 @@ describe('Pirate model', () => {
         const errors = getErrors(tour.validateSync(), 1);
         assert.equal(errors['stops.0.attendance'].kind, 'min');
     });
+    
 });
