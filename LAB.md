@@ -30,7 +30,7 @@ In addition there are the following APIs for managing tour stops:
 
 * `POST` `/tours/:id/stops` - add a stop to this tour
 * `DELETE` `/tours/:id/stops/:stopId` - remove a stop that got cancelled
-* `POST` `/tours/:id/stops/:stopId/attendence` - update a stop (after complete) with number of attendees (NOTE:
+* `POST` `/tours/:id/stops/:stopId/attendence` - update a stop (after complete) with number of attendees     (NOTE:
 this should _only_ update the attendence field of the stop, not other updates allowed)
 
 The schema structure of a stop looks like:

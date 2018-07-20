@@ -53,7 +53,7 @@ describe('Tours API', () => {
                 assert.deepEqual(body, tour2);
             });
     });
-        
+    // updating attendance   
     it('updates a tour with attendance', () => {
         tour2.stops.attendance = 500;
         return request
