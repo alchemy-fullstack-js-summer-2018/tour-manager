@@ -153,7 +153,7 @@ describe.only('Tours API', () => {
         const lhr = {
             location: {
                 city: 'London',
-                state: 'California',
+                state: 'England',
                 zip: 92115
             },
             weather: {
