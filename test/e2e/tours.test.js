@@ -149,7 +149,7 @@ describe.only('Tours API', () => {
             .then(({ body }) => body);
     }
 
-    it.only('adds a stop to a tour on POST', () => {
+    it('adds a stop to a tour on POST', () => {
         const lhr = {
             location: {
                 city: 'London',
@@ -167,6 +167,37 @@ describe.only('Tours API', () => {
             .then(stop => {
                 assert.isDefined(stop._id);
                 assert.equal(stop.attendance, lhr.attendance);
+            });
+    });
+
+    it.only('removes a stop that was cancelled on DELETE', () => {
+        const stop = {
+            location: {
+                city: 'Ann Arbor',
+                state: 'Michigan',
+                zip: 48104
+            },
+            weather: {
+                temperature: 66,
+                condition: 'Partly Cloudy'
+            },
+            attendance: 45
+        };
+
+        return addStop(beatles, stop)
+            .then(stop => {
+                console.log('stop', stop);
+                return request
+                    .delete(`/api/tours/${beatles._id}/stops/${stop._id}`);
+            })
+            .then(checkOk)
+            .then(() => {
+                return request  
+                    .get(`/api/tours/${beatles._id}`);
+            })
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.equal(body.stops.length, 2);
             });
     });
 });
