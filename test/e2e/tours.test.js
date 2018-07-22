@@ -123,7 +123,7 @@ describe.only('Tours API', () => {
             });
     });
 
-    it.only('removes a tour on DELETE', () => {
+    it('removes a tour on DELETE', () => {
         return request
             .del(`/api/tours/${barnum._id}`)
             .then(checkOk)
@@ -141,32 +141,32 @@ describe.only('Tours API', () => {
             });
     });
 
-    // function addStop(tour, stop) {
-    //     return request
-    //         .post(`/api/tours/${tour._id}/stops`)
-    //         .send(stop)
-    //         .then(checkOk)
-    //         .then(({ body }) => body);
-    // }
+    function addStop(tour, stop) {
+        return request
+            .post(`/api/tours/${tour._id}/stops`)
+            .send(stop)
+            .then(checkOk)
+            .then(({ body }) => body);
+    }
 
-    // it.skip('adds a stop to a tour on POST', () => {
-    //     const lhr = {
-    //         location: {
-    //             city: 'London',
-    //             state: 'California',
-    //             zip: 92115
-    //         },
-    //         weather: {
-    //             temperature: 76,
-    //             condition: 'sunny'
-    //         },
-    //         attendance: 1000
-    //     };
-
-    //     return addStop(tour, lhr) 
-    //         .then(stop => {
-    //             assert.isDefined(stop._id);
-    //             assert.equal(stop.location, lhr.location);
-    //         });
-    // });
+    it.only('adds a stop to a tour on POST', () => {
+        const lhr = {
+            location: {
+                city: 'London',
+                state: 'California',
+                zip: 92115
+            },
+            weather: {
+                temperature: 76,
+                condition: 'sunny'
+            },
+            attendance: 1000
+        };
+        
+        return addStop(beatles, lhr) 
+            .then(stop => {
+                assert.isDefined(stop._id);
+                assert.equal(stop.attendance, lhr.attendance);
+            });
+    });
 });
