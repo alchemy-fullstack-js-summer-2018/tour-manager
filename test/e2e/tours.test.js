@@ -128,13 +128,39 @@ describe('Tours API', () => {
             weather: {
                 temperature: 85,
             },
-            attendance: 800 
         };
         return addStop(tour2, stop)
             .then(_stop => {
                 assert.isDefined(_stop._id);
                 assert.equal(_stop.attendance, stop.attendance);
             });
+    });
+    it('deletes a stop from a tour', () => {
+        const newStop = {
+            location: {
+                city: 'Tacoma',
+                state: 'WA',
+                zip: 98407
+            },
+            weather: {
+                temperature: 85,
+            }
+        };
+
+        return addStop(tour2, newStop)
+            .then(stop => {
+                return request
+                    .delete(`/api/tours/${tour2._id}/stops/${stop._id}`);
+            })
+            .then(checkOk)
+            .then(() => {
+                return request.get(`/api/tours/${tour2._id}`);
+            })
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.equal(body.stops.length, 2);
+            });
+
     });
     // updating attendance   
     // it('updates a tour with attendance', () => {
