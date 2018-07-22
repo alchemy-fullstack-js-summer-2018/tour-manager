@@ -11,9 +11,10 @@ describe.only('Tours API', () => {
 
     beforeEach(() => dropCollection('tours'));
 
-    let tour;
+    let barnum;
+    let beatles;
 
-    const data = {
+    const barnumData = {
         title: 'P.T. Barnum\'s Circus at London',
         activities: ['tightrope', 'trapeze', 'lion tamer'],
         launchDate: new Date(2018, 7, 18),
@@ -48,19 +49,58 @@ describe.only('Tours API', () => {
     beforeEach(() => {
         return request  
             .post('/api/tours')
-            .send(data)
-            .then(({ body }) => tour = body);
+            .send(barnumData)
+            .then(({ body }) => barnum = body);
+    });
+
+    const beatlesData = {
+        title: 'Magical Mystery Tour',
+        activities: ['trampoline', 'lion tamer', 'kite flying'],
+        launchDate: new Date(2018, 8, 19),
+        stops: [
+            {
+                location: {
+                    city: 'London',
+                    state: 'California',
+                    zip: 92115
+                },
+                weather: {
+                    temperature: 76,
+                    condition: 'sunny'
+                },
+                attendance: 100
+            },
+            {
+                location: {
+                    city: 'Portland',
+                    state: 'Oregon',
+                    zip: 92709
+                },
+                weather: {
+                    temperature: 66,
+                    condition: 'rainy'
+                },
+                attendance: 40000
+            }
+        ]
+    };
+
+    beforeEach(() => {
+        return request  
+            .post('/api/tours')
+            .send(beatlesData)
+            .then(({ body }) => beatles = body);
     });
 
     it('saves a tour', () => {
-        assert.isOk(tour._id);
+        assert.isOk(barnum._id);
     });
 
     it('returns a tour by id on GET', () => {
         return request
-            .get(`/api/tours/${tour._id}`)
+            .get(`/api/tours/${barnum._id}`)
             .then(({ body }) => {
-                assert.deepEqual(body, tour);
+                assert.deepEqual(body, barnum);
             });
     });
 
@@ -68,23 +108,24 @@ describe.only('Tours API', () => {
         return request
             .get('/api/tours')
             .then(({ body }) => {
-                assert.deepEqual(body[0].title, tour.title);
+                assert.deepEqual(body[0].title, barnum.title);
+                assert.deepEqual(body[1].title, beatles.title);
             });
     });
 
     it('updates a tour on PUT', () => {
-        tour.title = 'For the Benefit of Mr.Kite';
+        beatles.title = 'For the Benefit of Mr.Kite';
         return request
-            .put(`/api/tours/${tour._id}`)
-            .send(tour)
+            .put(`/api/tours/${beatles._id}`)
+            .send(beatles)
             .then(({ body }) => {
-                assert.deepEqual(body, tour);
+                assert.deepEqual(body, beatles);
             });
     });
 
-    it('removes a tour on DELETE', () => {
+    it.only('removes a tour on DELETE', () => {
         return request
-            .del(`/api/tours/${tour._id}`)
+            .del(`/api/tours/${barnum._id}`)
             .then(checkOk)
             .then(res => {
                 assert.deepEqual(res.body, { removed: true });
@@ -92,7 +133,11 @@ describe.only('Tours API', () => {
             })
             .then(checkOk)
             .then(({ body }) => {
-                assert.deepEqual(body, []);
+                beatles = {
+                    _id: beatles._id,
+                    title: beatles.title
+                };
+                assert.deepEqual(body, [beatles]);
             });
     });
 
