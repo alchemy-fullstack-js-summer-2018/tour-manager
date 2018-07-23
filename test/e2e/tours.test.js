@@ -7,7 +7,7 @@ const checkOk = res => {
     return res;
 };
 
-describe.only('Tours API', () => {
+describe('Tours API', () => {
 
     beforeEach(() => dropCollection('tours'));
 
@@ -200,7 +200,7 @@ describe.only('Tours API', () => {
             });
     });
 
-    it.only('updates attendance for a stop on PUT', () => {
+    it('updates attendance for a stop on PUT', () => {
         const stop = {
             attendance: 4353234645624563
         };
@@ -208,7 +208,6 @@ describe.only('Tours API', () => {
             .put(`/api/tours/${beatles._id}/stops/${beatles.stops[0]._id}/attendance`)
             .send(stop)
             .then(({ body }) => {
-                console.log('Body', body);
                 assert.equal(body.stops[0].attendance, stop.attendance);
             });
     });
