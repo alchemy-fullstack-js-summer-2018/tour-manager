@@ -170,7 +170,7 @@ describe.only('Tours API', () => {
             });
     });
 
-    it.only('removes a stop that was cancelled on DELETE', () => {
+    it('removes a stop that was cancelled on DELETE', () => {
         const stop = {
             location: {
                 city: 'Ann Arbor',
@@ -186,7 +186,6 @@ describe.only('Tours API', () => {
 
         return addStop(beatles, stop)
             .then(stop => {
-                console.log('stop', stop);
                 return request
                     .delete(`/api/tours/${beatles._id}/stops/${stop._id}`);
             })
@@ -200,4 +199,18 @@ describe.only('Tours API', () => {
                 assert.equal(body.stops.length, 2);
             });
     });
+
+    it.only('updates attendance for a stop on PUT', () => {
+        const stop = {
+            attendance: 4353234645624563
+        };
+        return request
+            .put(`/api/tours/${beatles._id}/stops/${beatles.stops[0]._id}/attendance`)
+            .send(stop)
+            .then(({ body }) => {
+                console.log('Body', body);
+                assert.equal(body.stops[0].attendance, stop.attendance);
+            });
+    });
+
 });
