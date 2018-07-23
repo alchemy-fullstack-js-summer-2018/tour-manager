@@ -1,7 +1,6 @@
 const connect = require('../../lib/utils/connect');
 connect('mongodb://localhost:27017/circus');
 const mongoose = require('mongoose');
-//don't forget api key when ready
 
 after(() => {
     return mongoose.connection.close();

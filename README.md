@@ -1,7 +1,7 @@
 # Tour Manager
 
 ## Project Description
-Stay tuned!
+An end-to-end (e2e) tested HTTP server created for tracking traveling circus tours, including stops. The Wunderground API was used to populate weather data with a given zip code. This project stack includes: Mongoose, ExpressJS, Node.js. Tested with Mocha & Chai.  
 
 ## Developer
 Requires Node v10 or later.
@@ -14,9 +14,20 @@ Requires Node v10 or later.
 ### How to use API
 * Create your own .env files with the .env.example files provided in the root of the project and the test folder. Enter the correct MongoDB URI. Port is currently set to 3000, you may update it to your port of choice.
 * Connect to server with `npm run start`.
-* Enter `http://localhost:3000` in your browser.
+* Enter `http://localhost:3000/api/tours` in your browser.
 
-More to come...
+The following methods are used for the paths listed:
+
+Method | Path
+---|---
+`GET` |     `/tours`
+`GET` |     `/tours/:id`
+`POST` |     `/tours`
+`PUT` |     `/tours/:id`
+`DELETE` |     `/tours/:id`
+`POST` |     `/tours/:id/stops`
+`PUT` |     `/tours/:id/stops/:stopId`
+`DELETE` |     `/tours/:id/stops/:stopId`  
 
 ## Contributor
 [Mariah Adams](https://github.com/MariahAdams)
