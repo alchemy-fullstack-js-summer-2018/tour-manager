@@ -67,6 +67,8 @@ describe('Tours API', () => {
             attendance: 100
         };
 
+    
+
         return addStop(universoul, jamestown)
             .then(stop => {
                 assert.isDefined(stop._id);    
@@ -74,15 +76,34 @@ describe('Tours API', () => {
             });
     });
 
-    // it('updates stops with number of attendance', () => {
-    //     const data = { attendance: 1000 };
-    //     return request
-    //         .put(`/api/tours/${tour._id}/stops/${tour.stops[0].id}/attendance`)
-    //         .send(data)
-    //         .then(checkOk)
-    //         . then(({ body }) => {
-    //             assert.deepEqual(body.stops[0].attendance, 1000);
-    //         });
-    // });
+
+    it('updates stops with number of attendance', () => {
+
+        const downtown = {
+            location: {
+                city: 'St Louis',
+                state: 'MO',
+                zip: 63010
+            },
+            weather: {
+                temperature: '78 F',
+                condition: 'Sunny'
+            },
+            attendance: 200
+        };
+
+        const data = { attendance: 1000 };
+        addStop(universoul, downtown)
+            .then(stop => {
+                return request
+                    .put(`/api/tours/${universoul._id}/stops/${stop._id}/attendance`)
+                    .send(data)
+                    .then(checkOk)
+                    . then(({ body }) => {
+                        assert.deepEqual(body.stops[0].attendance, 1000);
+                    });
+                
+            });
+    });
     
 });
