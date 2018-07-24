@@ -13,10 +13,10 @@ describe('Tour model', () => {
                 location: {
                     city: 'Portland',
                     state: 'OR',                        
-                    zip: 97203,
+                    zip: '97203',
                 },
                 weather: {
-                    temperature: 80,
+                    temperature: '80',
                 },
                 attendance: 1000,
             }]
