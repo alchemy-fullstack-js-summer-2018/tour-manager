@@ -117,7 +117,7 @@ describe('Tours tests', () => {
 
     it('deletes a tour', () => {
         return request
-            .del(`/api/tours${circusWalrus._id}`)
+            .del(`/api/tours/${circusWalrus._id}`)
             .then(checkOk)
             .then(res => {
                 assert.deepEqual(res.body, { removed: true });
@@ -125,10 +125,6 @@ describe('Tours tests', () => {
             })
             .then(checkOk)
             .then(({ body }) => {
-                walrusWorld = {
-                    _id: walrusWorld._id,
-                    title: walrusWorld.title
-                };
                 assert.deepEqual(body, [walrusWorld]);
             });
     });
