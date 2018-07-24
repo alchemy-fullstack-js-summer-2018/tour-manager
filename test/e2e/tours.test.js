@@ -9,14 +9,72 @@ const checkOk = res => {
 
 describe('Tours tests', () => {
     beforeEach(() => dropCollection('tours'));
-    let walrus;
+    
+    //defining data sets for tests
+    let circusWalrus;
+    let walrusWorld;
+
+    const circusWalrusData = {
+        title: 'Circus Walrus 2018 Tour',
+        activities: ['trained walruses', 'fire eaters'],
+        launchDate: new Date(2018, 7, 18),
+        stops: [
+            {
+                location: {
+                    city: 'Black Betsy',
+                    state: 'WV',
+                    zip: 25159
+                },
+                weather: {
+                    temperature: 80,
+                    conditions: 'sunny and humid'
+                },
+                attendance: 400
+            }, {
+                location: {
+                    city: 'Big Ugly Creek',
+                    state: 'WV',
+                    zip: 25524
+                },
+                weather: {
+                    temperature: 84,
+                    conditions: 'sunny and hot'
+                },
+                attendance: 310
+            }]
+
+            const walrusWorldData = {
+                title: 'Wonderful World of Walruses 2018',
+                activities: ['trained walruses', 'fire eaters', 'Clam eating contest'],
+                launchDate: new Date(2018, 7, 18),
+                stops: [
+                    {
+                        location: {
+                            city: 'Burnt Corn',
+                            state: 'AL',
+                            zip: 36401
+                        },
+                        weather: {
+                            temperature: 88,
+                            conditions: 'cloudy and humid'
+                        },
+                        attendance: 292
+                    }, {
+                        location: {
+                            city: 'Blue Eye',
+                            state: 'AL',
+                            zip: 35096
+                        },
+                        weather: {
+                            temperature: 84,
+                            conditions: 'sunny and hot'
+                        },
+                        attendance: 501
+                    }]
+    };
 
     beforeEach(() => {
-        const data = {
-            title: 'Circus Walrus 2018 Tour',
-            activities: ['trained walruses', 'fire eaters'],
-            launchDate: new Date(2018, 7, 18)
-        };
+        
         return request 
             .post('/api/tours')
             .send(data)
