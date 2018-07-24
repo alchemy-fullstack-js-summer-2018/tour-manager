@@ -36,4 +36,13 @@ describe('Tours API', () => {
                 assert.deepEqual(res.body._id, universoul._id);
             });
     });
+
+    it('gets a tour by id', () => {
+        return request
+            .get(`/api/tours/${universoul._id}`)
+            .then(({ body }) => {
+                console.log(body);
+                assert.deepEqual(body, universoul);
+            });
+    });
 });
