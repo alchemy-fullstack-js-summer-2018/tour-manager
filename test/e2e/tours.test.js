@@ -157,7 +157,7 @@ describe('Tours tests', () => {
                 assert.equal(stop.attendance, stp.attendance);
             });
 
-    })
+    });
 
     it('deletes a stop from a tour', () => {
         const stp = {
@@ -183,6 +183,18 @@ describe('Tours tests', () => {
                 assert.equal(body.stops.length, 2);
             });
 
+    });
+
+    it('updates attendance numbers for a tour stop', () => {
+        const stop = {
+            attendance: 700
+        };
+        return request
+            .put(`/api/tours/${walrusWorld._id}/stops/${walrusWorld.stops[0]._id}/attendance`)
+            .send(stop)
+            .then(({ body }) => {
+                assert.equal(body.stops[0].attendance, stop.attendance);
+            });
     });
     
 
