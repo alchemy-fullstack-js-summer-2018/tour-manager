@@ -51,7 +51,7 @@ describe('Tours tests', () => {
             .send(circusWalrusData)
             .then(checkOk)
             .then(({ body }) => circusWalrus = body);
-            });
+    });
 
     const walrusWorldData = {
         title: 'Wonderful World of Walruses 2018',
@@ -90,16 +90,16 @@ describe('Tours tests', () => {
             .send(walrusWorldData)
             .then(checkOk)
             .then(({ body }) => walrusWorld = body);
-            });
     });
+    
 
     it('returns ALL tours', () => {
         return request
             .get('/api/tours')
             .then(checkOk)
             .then(({ body }) => {
-                assert.deepEqual(body[0].title, walrusWorld.title);
-                assert.deepEqual(body[1].title, circusWalrus.title);
+                assert.deepEqual(body[0].title, circusWalrus.title);
+                assert.deepEqual(body[1].title, walrusWorld.title);
             });
     });
 
@@ -115,6 +115,24 @@ describe('Tours tests', () => {
         assert.isOk(walrusWorld._id);
     });
 
+    it('deletes a tour', () => {
+        return request
+            .del(`/api/tours${circusWalrus._id}`)
+            .then(checkOk)
+            .then(res => {
+                assert.deepEqual(res.body, { removed: true });
+                return request.get('/api/tours');
+            })
+            .then(checkOk)
+            .then(({ body }) => {
+                walrusWorld = {
+                    _id: walrusWorld._id,
+                    title: walrusWorld.title
+                };
+                assert.deepEqual(body, [walrusWorld]);
+            });
+    });
 
+    
 
 });
