@@ -1,6 +1,7 @@
 const { assert } = require('chai');
 const request = require('./request');
 const { dropCollection } = require('./db');
+const getLocationWeather = require('../../lib/util/weather-service');
 
 const checkOk = res => {
     assert.equal(res.status, 200, 'expected 200 http status code');
@@ -33,10 +34,10 @@ describe('Tours API', () => {
                 location: {
                     city: 'Las Vegas',
                     state: 'Nevada',
-                    zip: 89109
+                    zip: '89109'
                 },
                 weather: {
-                    temperature: 99,
+                    temperature: '99',
                     condition: 'dry heat'
                 },
                 attendance: 2000
@@ -57,10 +58,10 @@ describe('Tours API', () => {
                 location: {
                     city: 'Las Vegas',
                     state: 'Nevada',
-                    zip: 89109
+                    zip: '89109'
                 },
                 weather: {
-                    temperature: 102,
+                    temperature: '102',
                     condition: 'hell fire'
                 },
                 attendance: 1800
@@ -90,6 +91,14 @@ describe('Tours API', () => {
             .get('/api/tours')
             .then(({ body }) => {
                 assert.deepEqual(body, circuses);
+            });
+    });
+
+    it('get weather info', () => {
+        return getLocationWeather('89109')
+            .then(data => {
+                console.log(data);
+                assert.isDefined(data);
             });
     });
                 
@@ -131,10 +140,10 @@ describe('Tours API', () => {
             location: {
                 city: 'Portland',
                 state: 'Oregon',
-                zip: 97209
+                zip: '97209'
             },
             weather: {
-                temperature: 75,
+                temperature: '75',
                 condition: 'cloudy'
             },
             attendance: 13
@@ -160,10 +169,10 @@ describe('Tours API', () => {
             location: {
                 city: 'Portland',
                 state: 'Oregon',
-                zip: 97209
+                zip: '97209'
             },
             weather: {
-                temperature: 75,
+                temperature: '75',
                 condition: 'cloudy'
             },
             attendance: 13

@@ -2,7 +2,7 @@ const { assert } = require('chai');
 const { getErrors } = require('./helpers');
 const Tour = require('../../lib/models/tour');
 
-describe('Pirate model', () => {
+describe('Tour model', () => {
     it('validates good model', () => {
         const data = {
             title: 'Cirque du Soleil',
@@ -12,10 +12,10 @@ describe('Pirate model', () => {
                 location: {
                     city: 'Portland',
                     state: 'Oregon',
-                    zip: 97209
+                    zip: '97209'
                 },
                 weather: {
-                    temperature: 75,
+                    temperature: '75',
                     condition: 'Partially cloudy'
                 },
                 attendance: 1
