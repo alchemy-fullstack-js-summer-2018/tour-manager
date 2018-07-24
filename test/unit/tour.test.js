@@ -2,7 +2,7 @@ const { assert } = require('chai');
 const { getErrors } = require('./helpers');
 const Tour = require('../../lib/models/tour');
 
-describe.only('Tour model', () => {
+describe('Tour model', () => {
 
     it('validates the data model', () => {
         const data = {
