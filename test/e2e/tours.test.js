@@ -162,20 +162,17 @@ describe('Tours API', () => {
             });
 
     });
-    // updating attendance   
-    // it('updates a tour with attendance', () => {
-    //     const data = { attendance: 500 };
-    //     return request
-    //         .put('/api/tours/stops.attendance')
-    //         .send(data)
-    //         .then(checkOk)
-    //         .then(({ body }) => {
-    //             assert.deepEqual(body.stops[0].attendance, 500);
-    //         });
-    // });
-    
-    
 
+    it('updates a stop with attendance', () => {
+        const data = { attendance: 500 };
+        return request
+            .put(`/api/tours/${tour2._id}/stops/${tour2.stops[1]._id}/attendance`)
+            .send(data)
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.deepEqual(body.stops[1].attendance, 500);
+            });
+    });
 });
 
  
