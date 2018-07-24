@@ -7,6 +7,6 @@ describe('Wunderground API', () => {
         return getLocationWeather('92111')
             .then(data => {
                 assert.isOk(data);
-            })
+            });
     });
 });
