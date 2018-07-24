@@ -157,7 +157,34 @@ describe('Tours tests', () => {
                 assert.equal(stop.attendance, stp.attendance);
             });
 
+    })
+
+    it('deletes a stop from a tour', () => {
+        const stp = {
+            location: {
+                city: 'Goochland',
+                state: 'VA',
+                zip: 23063
+            },
+            weather: {
+                temperature: 78,
+                condition: 'partly cloudy'
+            },
+            attendance: 342
+        };
+
+        return addStop(walrusWorld, stp)
+            .then(stop => {
+                return request
+                    .delete(`/api/tours/${walrusWorld._id}/stops/${stop._id}`);
+            })
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.equal(body.stops.length, 2);
+            });
+
     });
+    
 
     
 
