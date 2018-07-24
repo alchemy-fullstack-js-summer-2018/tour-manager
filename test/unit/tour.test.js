@@ -2,7 +2,7 @@ const { assert } = require('chai');
 const { getErrors } = require('./helpers');
 const Tour = require('../../lib/models/tour');
 
-describe('Tour model', () => {
+describe.only('Tour model', () => {
 
     it('validates the data model', () => {
         const data = {
@@ -58,6 +58,15 @@ describe('Tour model', () => {
         });
         const errors = getErrors(tour.validateSync(), 1);
         assert.equal(errors['stops.0.attendance'.kind, 'min']);
+    });
+
+    it('defaults date to now for launchDate', () => {
+        const date = new Date().getDate();
+        const tour = new Tour({
+            title: 'Walrus Wonderland 2018',
+        });
+
+        assert.strictEqual(tour.launchDate.getDate(), date);
     });
 
     

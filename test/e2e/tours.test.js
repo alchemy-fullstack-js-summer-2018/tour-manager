@@ -27,7 +27,6 @@ describe('Tours tests', () => {
             });
     });
 
-
     it('returns ALL tours', () => {
         return request
             .get('/api/tours')

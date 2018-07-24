@@ -1,5 +1,6 @@
 const { assert } = require('chai');
 const weatherService = require('../../lib/util/weather-service');
+const createMiddleware = require('../../lib/util/weather-service');
 
 
 it('gets the city, state, weather and conditions for a tour stop', done => {
