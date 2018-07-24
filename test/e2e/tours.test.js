@@ -7,13 +7,14 @@ const checkOk = res => {
     return res;
 };
 
-describe.only('Tours API', () => {
+describe('Tours API', () => {
 
     beforeEach(() => dropCollection('tours'));
 
-    let tour;
+    let barnum;
+    let beatles;
 
-    const data = {
+    const barnumData = {
         title: 'P.T. Barnum\'s Circus at London',
         activities: ['tightrope', 'trapeze', 'lion tamer'],
         launchDate: new Date(2018, 7, 18),
@@ -48,19 +49,58 @@ describe.only('Tours API', () => {
     beforeEach(() => {
         return request  
             .post('/api/tours')
-            .send(data)
-            .then(({ body }) => tour = body);
+            .send(barnumData)
+            .then(({ body }) => barnum = body);
+    });
+
+    const beatlesData = {
+        title: 'Magical Mystery Tour',
+        activities: ['trampoline', 'lion tamer', 'kite flying'],
+        launchDate: new Date(2018, 8, 19),
+        stops: [
+            {
+                location: {
+                    city: 'London',
+                    state: 'California',
+                    zip: 92115
+                },
+                weather: {
+                    temperature: 76,
+                    condition: 'sunny'
+                },
+                attendance: 100
+            },
+            {
+                location: {
+                    city: 'Portland',
+                    state: 'Oregon',
+                    zip: 92709
+                },
+                weather: {
+                    temperature: 66,
+                    condition: 'rainy'
+                },
+                attendance: 40000
+            }
+        ]
+    };
+
+    beforeEach(() => {
+        return request  
+            .post('/api/tours')
+            .send(beatlesData)
+            .then(({ body }) => beatles = body);
     });
 
     it('saves a tour', () => {
-        assert.isOk(tour._id);
+        assert.isOk(barnum._id);
     });
 
     it('returns a tour by id on GET', () => {
         return request
-            .get(`/api/tours/${tour._id}`)
+            .get(`/api/tours/${barnum._id}`)
             .then(({ body }) => {
-                assert.deepEqual(body, tour);
+                assert.deepEqual(body, barnum);
             });
     });
 
@@ -68,23 +108,24 @@ describe.only('Tours API', () => {
         return request
             .get('/api/tours')
             .then(({ body }) => {
-                assert.deepEqual(body[0].title, tour.title);
+                assert.deepEqual(body[0].title, barnum.title);
+                assert.deepEqual(body[1].title, beatles.title);
             });
     });
 
     it('updates a tour on PUT', () => {
-        tour.title = 'For the Benefit of Mr.Kite';
+        beatles.title = 'For the Benefit of Mr.Kite';
         return request
-            .put(`/api/tours/${tour._id}`)
-            .send(tour)
+            .put(`/api/tours/${beatles._id}`)
+            .send(beatles)
             .then(({ body }) => {
-                assert.deepEqual(body, tour);
+                assert.deepEqual(body, beatles);
             });
     });
 
     it('removes a tour on DELETE', () => {
         return request
-            .del(`/api/tours/${tour._id}`)
+            .del(`/api/tours/${barnum._id}`)
             .then(checkOk)
             .then(res => {
                 assert.deepEqual(res.body, { removed: true });
@@ -92,36 +133,83 @@ describe.only('Tours API', () => {
             })
             .then(checkOk)
             .then(({ body }) => {
-                assert.deepEqual(body, []);
+                beatles = {
+                    _id: beatles._id,
+                    title: beatles.title
+                };
+                assert.deepEqual(body, [beatles]);
             });
     });
 
-    // function addStop(tour, stop) {
-    //     return request
-    //         .post(`/api/tours/${tour._id}/stops`)
-    //         .send(stop)
-    //         .then(checkOk)
-    //         .then(({ body }) => body);
-    // }
+    function addStop(tour, stop) {
+        return request
+            .post(`/api/tours/${tour._id}/stops`)
+            .send(stop)
+            .then(checkOk)
+            .then(({ body }) => body);
+    }
 
-    // it.skip('adds a stop to a tour on POST', () => {
-    //     const lhr = {
-    //         location: {
-    //             city: 'London',
-    //             state: 'California',
-    //             zip: 92115
-    //         },
-    //         weather: {
-    //             temperature: 76,
-    //             condition: 'sunny'
-    //         },
-    //         attendance: 1000
-    //     };
+    it('adds a stop to a tour on POST', () => {
+        const lhr = {
+            location: {
+                city: 'London',
+                state: 'England',
+                zip: 92115
+            },
+            weather: {
+                temperature: 76,
+                condition: 'sunny'
+            },
+            attendance: 1000
+        };
+        
+        return addStop(beatles, lhr) 
+            .then(stop => {
+                assert.isDefined(stop._id);
+                assert.equal(stop.attendance, lhr.attendance);
+            });
+    });
 
-    //     return addStop(tour, lhr) 
-    //         .then(stop => {
-    //             assert.isDefined(stop._id);
-    //             assert.equal(stop.location, lhr.location);
-    //         });
-    // });
+    it('removes a stop that was cancelled on DELETE', () => {
+        const stop = {
+            location: {
+                city: 'Ann Arbor',
+                state: 'Michigan',
+                zip: 48104
+            },
+            weather: {
+                temperature: 66,
+                condition: 'Partly Cloudy'
+            },
+            attendance: 45
+        };
+
+        return addStop(beatles, stop)
+            .then(stop => {
+                return request
+                    .delete(`/api/tours/${beatles._id}/stops/${stop._id}`);
+            })
+            .then(checkOk)
+            .then(() => {
+                return request  
+                    .get(`/api/tours/${beatles._id}`);
+            })
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.equal(body.stops.length, 2);
+            });
+    });
+
+    it('updates attendance for a stop on PUT', () => {
+        const stop = {
+            attendance: 4353234645624563
+        };
+        return request
+            .put(`/api/tours/${beatles._id}/stops/${beatles.stops[0]._id}/attendance`)
+            .send(stop)
+            .then(({ body }) => {
+                assert.equal(body.stops[0].attendance, stop.attendance);
+            });
+    });
+
 });

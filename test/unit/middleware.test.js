@@ -5,8 +5,8 @@ describe('Middleware tests', () => {
 
     it('handles async', done => {
         const weather = {
-            temperature: '',
-            condition: ''
+            temperature: '76',
+            condition: 'sunny'
         };
         const location = {
             city: 'San Diego',
@@ -23,26 +23,13 @@ describe('Middleware tests', () => {
         const middleware = createMiddleware(api);
 
         const next = () => {
-            //make assertions
-            //test that req.body has weather and location
             assert.deepEqual(req.body, { weather, location });
-
             done();
         };
 
         const req = {
             query: {
                 zip: '92115'
-            },
-            body: {
-                weather: {
-                    temperature: '',
-                    condition: ''
-                },
-                location: {
-                    city: 'San Diego',
-                    state: 'California',
-                }
             }
         };
 
