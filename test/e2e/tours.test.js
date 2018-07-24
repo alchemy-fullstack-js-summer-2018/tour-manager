@@ -42,46 +42,54 @@ describe('Tours tests', () => {
                 },
                 attendance: 310
             }]
-
-            const walrusWorldData = {
-                title: 'Wonderful World of Walruses 2018',
-                activities: ['trained walruses', 'fire eaters', 'Clam eating contest'],
-                launchDate: new Date(2018, 7, 18),
-                stops: [
-                    {
-                        location: {
-                            city: 'Burnt Corn',
-                            state: 'AL',
-                            zip: 36401
-                        },
-                        weather: {
-                            temperature: 88,
-                            conditions: 'cloudy and humid'
-                        },
-                        attendance: 292
-                    }, {
-                        location: {
-                            city: 'Blue Eye',
-                            state: 'AL',
-                            zip: 35096
-                        },
-                        weather: {
-                            temperature: 84,
-                            conditions: 'sunny and hot'
-                        },
-                        attendance: 501
-                    }]
     };
 
     beforeEach(() => {
         
         return request 
             .post('/api/tours')
-            .send(data)
+            .send(circusWalrusData)
             .then(checkOk)
-            .then(({ body }) => {
-                assert.deepEqual(body.title, data.title);
-                walrus = body;
+            .then(({ body }) => circusWalrus = body);
+            });
+
+    const walrusWorldData = {
+        title: 'Wonderful World of Walruses 2018',
+        activities: ['trained walruses', 'fire eaters', 'Clam eating contest'],
+        launchDate: new Date(2018, 7, 18),
+        stops: [
+            {
+                location: {
+                    city: 'Burnt Corn',
+                    state: 'AL',
+                    zip: 36401
+                },
+                weather: {
+                    temperature: 88,
+                    conditions: 'cloudy and humid'
+                },
+                attendance: 292
+            }, {
+                location: {
+                    city: 'Blue Eye',
+                    state: 'AL',
+                    zip: 35096
+                },
+                weather: {
+                    temperature: 84,
+                    conditions: 'sunny and hot'
+                },
+                attendance: 501
+            }]
+    };
+
+    beforeEach(() => {
+        
+        return request 
+            .post('/api/tours')
+            .send(walrusWorldData)
+            .then(checkOk)
+            .then(({ body }) => walrusWorld = body);
             });
     });
 
@@ -90,8 +98,23 @@ describe('Tours tests', () => {
             .get('/api/tours')
             .then(checkOk)
             .then(({ body }) => {
-                assert.deepEqual(body, [walrus]);
+                assert.deepEqual(body[0].title, walrusWorld.title);
+                assert.deepEqual(body[1].title, circusWalrus.title);
             });
     });
+
+    it('GET tour by Id', () => {
+        return request
+            .get(`/api/tours/${walrusWorld._id}`)
+            .then(({ body }) => {
+                assert.deepEqual(body, walrusWorld);
+            });
+    });
+
+    it('saves a tour', () => {
+        assert.isOk(walrusWorld._id);
+    });
+
+
 
 });
