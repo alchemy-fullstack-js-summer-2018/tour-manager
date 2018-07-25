@@ -95,7 +95,7 @@ describe('Tours API', () => {
         const data = { attendance: 1000 };
         addStop(universoul, downtown)
             .then(stop => {
-                const test = request
+                request
                     .put(`/api/tours/${universoul._id}/stops/${stop._id}/attendance`)
                     .send(data)
                     .then(checkOk)
