@@ -28,12 +28,12 @@ describe('Tours API', () => {
         assert.isOk(universoul._id);
     });
 
-    it('gets a tour', () => {
+    it('gets all tours', () => {
         return request
-            .get('/api/tours/' + universoul._id)
+            .get('/api/tours/')
             .then(checkOk)
             .then((res) => {
-                assert.deepEqual(res.body._id, universoul._id);
+                assert.deepEqual(res.body, [universoul]);
             });
     });
 
@@ -95,15 +95,48 @@ describe('Tours API', () => {
         const data = { attendance: 1000 };
         addStop(universoul, downtown)
             .then(stop => {
-                return request
+                const test = request
                     .put(`/api/tours/${universoul._id}/stops/${stop._id}/attendance`)
                     .send(data)
                     .then(checkOk)
                     . then(({ body }) => {
                         assert.deepEqual(body.stops[0].attendance, 1000);
                     });
+                console.log('test'. test);
                 
             });
+    });
+
+    it('removes a stop that got cancelled', () => {
+        
+        const downtown = {
+            location: {
+                city: 'St Louis',
+                state: 'MO',
+                zip: 63010
+            },
+            weather: {
+                temperature: '78 F',
+                condition: 'Sunny'
+            },
+            attendance: 200
+        };
+
+        return addStop(universoul, downtown)
+            .then(stop => {
+                console.log('stop', stop);
+                return request
+                    .delete(`/api/tours/${universoul._id}/stops/${stop._id}`);
+            })
+            .then(checkOk)
+            .then(() => {
+                return request.get(`/api/tours/${universoul._id}`);
+            })
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.equal(body.stops.length, 0);
+            });
+
     });
     
 });
