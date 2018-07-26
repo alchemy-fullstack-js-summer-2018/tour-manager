@@ -34,4 +34,17 @@ describe('Tours API', () => {
         assert.isOk(jezbo._id);
     });
 
-});
+    it('gets list of tours', () => {
+        let bubs;
+        return save({ title: 'bubs' }) 
+            .then(_bubs => {
+                bubs = _bubs;
+                return request.get('/api/tours');
+
+            })
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.deepEqual(body, [jezbo, bubs]);
+            });
+    });
+}); 
