@@ -1,6 +1,14 @@
 const { assert } = require('chai');
-const weatherService = require('../../lib/util/weather-service');
 
+function createLocationWeather(api) {
+    return (req, res, next) => {
+        return api(req.body.zip)
+            .then(data => {
+                req.body = data;
+                next();
+            });
+    };
+}
 
 it('gets the city, state, weather and conditions for a tour stop', done => {
     const weather = {
@@ -13,7 +21,7 @@ it('gets the city, state, weather and conditions for a tour stop', done => {
         zip: '25276'
     };
 
-    const wunderground = zip => {
+    const getLocationWeather = zip => {
         assert.equal(zip, '25276');
         return Promise.resolve({
             weather, location
@@ -25,12 +33,11 @@ it('gets the city, state, weather and conditions for a tour stop', done => {
     };
 
     const next = () => {
-        assert.deepEqual(req.body.location, 'location info missing');
-        assert.deepEqual(req.body.weather, 'weather info missing');
+        assert.deepEqual(req.body.location, location);
+        assert.deepEqual(req.body.weather, weather);
         done();
-
     };
 
-    const middleware = weatherService(wunderground);
-    middleware(req, null, next);
+    const getLocation = createLocationWeather(getLocationWeather);
+    getLocation(req, null, next);
 });

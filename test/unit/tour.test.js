@@ -60,5 +60,14 @@ describe('Tour model', () => {
         assert.equal(errors['stops.0.attendance'.kind, 'min']);
     });
 
+    it('defaults date to now for launchDate', () => {
+        const date = new Date().getDate();
+        const tour = new Tour({
+            title: 'Walrus Wonderland 2018',
+        });
+
+        assert.strictEqual(tour.launchDate.getDate(), date);
+    });
+
     
 });
