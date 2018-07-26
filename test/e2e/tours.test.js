@@ -3,6 +3,7 @@ const request = require('./request');
 const { dropCollection } = require('./db');
 
 
+
 const checkOk = res => {
     assert.equal(res.status, 200, 'expected 200 http status code');
     return res;
@@ -21,66 +22,157 @@ describe('Tours API', () => {
     }
 
     let tour2;
+    let tour3;
     beforeEach(() => {
-        return save({ title: 'Tour2' })
+        return save({ title: 'Amazers', 
+            activities: ['trapeze', 'lions', 'clowns'],
+            launchDate: new Date(),
+            stops: [
+                {
+                    location: {
+                        city: 'Portland',
+                        state: 'OR',
+                        zip: '97203'
+                    },
+                    weather: {
+                        temperature: '80',
+                    },
+                    attendance: 1000
+                },   
+                {
+                    location: {
+                        city: 'Eugene',
+                        state: 'OR',
+                        zip: '97401'
+                    },
+                    weather: {
+                        temperature: '80',
+                    }
+                },   
+            ] })
             .then(data => {
                 tour2 = data;
-            });
+            });   
+    });
+    beforeEach(() => {
+        return save({ title: 'Fantastical', 
+            activities: ['trapeze', 'lions', 'clowns'],
+            launchDate: new Date(),
+            stops: [
+                {
+                    location: {
+                        city: 'Seattle',
+                        state: 'WA',
+                        zip: 98118
+                    },
+                    weather: {
+                        temperature: 90,
+                    },
+                    attendance: 1200
+                },   
+                {
+                    location: {
+                        city: 'Olympia',
+                        state: 'WA',
+                        zip: 98501
+                    },
+                    weather: {
+                        temperature: 85
+                    },
+                    attendance: 600
+                },   
+            ] })
+            .then(data => {
+                tour3 = data;
+            });   
     });
 
     it('saves a tour', () => {
         assert.isOk(tour2._id);
+        assert.isOk(tour3._id);
     });
 
     it('gets all tours', () => {
-        let tour3;
-        return save({ title: 'Tour3' })
-            .then(_tour3 => {
-                tour3 = _tour3;
-                return request.get('/api/tours');
-            })
+        return request 
+            .get('/api/tours') 
             .then(checkOk)
             .then(({ body }) => {
                 assert.deepEqual(body, [tour2, tour3]);
-            });
+            });       
     });
         
     it('gets a tour by id', () => {
         return request
             .get(`/api/tours/${tour2._id}`)
             .then(({ body }) => {
-                console.log('*****', body);
+                // console.log('*****', body);
                 assert.deepEqual(body, tour2);
             });
     });
-        
-    it('updates a tour with attendance', () => {
-        tour2.stops.attendance = 500;
+    
+    // Stops
+    function addStop(tour, stop) {
         return request
-            .put(`/api/tours/${tour2._id}`)
-            .send(tour2)
+            .post(`/api/tours/${tour2._id}/stops`)
+            .send(stop)
             .then(checkOk)
-            .then(({ body }) => {
-                assert.deepEqual(body, tour2);
+            .then(({ body }) => body);
+    }
+    it('adds a stop to the tour', () => {
+        const stop = {
+            location: {
+                city: 'Tacoma',
+                state: 'WA',
+                zip: 98407
+            },
+            weather: {
+                temperature: 85,
+            },
+        };
+        return addStop(tour2, stop)
+            .then(_stop => {
+                assert.isDefined(_stop._id);
+                assert.equal(_stop.attendance, stop.attendance);
             });
     });
+    it('deletes a stop from a tour', () => {
+        const newStop = {
+            location: {
+                city: 'Tacoma',
+                state: 'WA',
+                zip: 98407
+            },
+            weather: {
+                temperature: 85,
+            }
+        };
 
-    it('removes a tour', () => {
-        return request
-            .delete(`/api/tours/${tour2._id}`)
+        return addStop(tour2, newStop)
+            .then(stop => {
+                return request
+                    .delete(`/api/tours/${tour2._id}/stops/${stop._id}`);
+            })
             .then(checkOk)
-            .then(res => {
-                assert.deepEqual(res.body, { removed: true });
-                return request.get('/api/tours');
+            .then(() => {
+                return request.get(`/api/tours/${tour2._id}`);
             })
             .then(checkOk)
             .then(({ body }) => {
-                assert.deepEqual(body, []);
+                assert.equal(body.stops.length, 2);
             });
+
     });
 
-
-
+    it('updates a stop with attendance', () => {
+        const data = { attendance: 500 };
+        return request
+            .put(`/api/tours/${tour2._id}/stops/${tour2.stops[1]._id}/attendance`)
+            .send(data)
+            .then(checkOk)
+            .then(({ body }) => {
+                assert.deepEqual(body.stops[1].attendance, 500);
+            });
+    });
 });
 
  
