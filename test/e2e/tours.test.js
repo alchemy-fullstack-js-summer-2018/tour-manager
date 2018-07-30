@@ -18,6 +18,18 @@ describe('Tours API', () => {
                 title: 'UniverSoul Circus',
                 activities: ['flying trapeze', 'carnival rides', 'carnival games'],
                 launchDate: new Date(1998, 6, 1),
+                stops: [{
+                    location: {
+                        city: 'St Louis',
+                        state: 'MO',
+                        zip: 63010
+                    },
+                    weather: {
+                        temperature: '78 F',
+                        condition: 'Sunny'
+                    },
+                    attendance: 100
+                }]
             })
             .then((res) => {
                 universoul = res.body;
@@ -67,43 +79,24 @@ describe('Tours API', () => {
             attendance: 100
         };
 
-    
-
         return addStop(universoul, jamestown)
             .then(stop => {
                 assert.isDefined(stop._id);    
-                assert.equal(stop.city, jamestown.city);
+                assert.deepEqual(stop.city, jamestown.city);
             });
     });
 
 
     it('updates stops with number of attendance', () => {
 
-        const downtown = {
-            location: {
-                city: 'St Louis',
-                state: 'MO',
-                zip: 63010
-            },
-            weather: {
-                temperature: '78 F',
-                condition: 'Sunny'
-            },
-            attendance: 200
-        };
-
         const data = { attendance: 1000 };
-        addStop(universoul, downtown)
-            .then(stop => {
-                request
-                    .put(`/api/tours/${universoul._id}/stops/${stop._id}/attendance`)
-                    .send(data)
-                    .then(checkOk)
-                    . then(({ body }) => {
-                        assert.deepEqual(body.stops[0].attendance, 1000);
-                    });
-                console.log('test'. test);
-                
+        
+        return request
+            .put(`/api/tours/${universoul._id}/stops/${universoul.stops[0]._id}/attendance`)
+            .send(data)
+            .then(checkOk)
+            . then(({ body }) => {
+                assert.deepEqual(body.stops[0].attendance, 1000);
             });
     });
 
@@ -116,7 +109,7 @@ describe('Tours API', () => {
                 zip: 63010
             },
             weather: {
-                temperature: '78 F',
+                temperature: '83 F',
                 condition: 'Sunny'
             },
             attendance: 200
@@ -124,7 +117,6 @@ describe('Tours API', () => {
 
         return addStop(universoul, downtown)
             .then(stop => {
-                console.log('stop', stop);
                 return request
                     .delete(`/api/tours/${universoul._id}/stops/${stop._id}`);
             })
@@ -134,9 +126,9 @@ describe('Tours API', () => {
             })
             .then(checkOk)
             .then(({ body }) => {
-                assert.equal(body.stops.length, 0);
-            });
+                assert.equal(body.stops.length, 1);
 
+            });
     });
     
 });
