@@ -1,6 +1,7 @@
 const { assert } = require('chai');
 const request = require('./request');
 const { dropCollection } = require('./db');
+const getLocationWeather = require('../../lib/util/get-weather');
 
 const checkOk = res => {
     assert.equal(res.status, 200, 'expected 200 http status code');
@@ -54,6 +55,13 @@ describe('Tours API', () => {
             .get(`/api/tours/${universoul._id}`)
             .then(({ body }) => {
                 assert.deepEqual(body, universoul);
+            });
+    });
+
+    it('gets location/weather data', () => {
+        return getLocationWeather('63034')
+            .then(data => {
+                assert.isDefined(data);  
             });
     });
 
